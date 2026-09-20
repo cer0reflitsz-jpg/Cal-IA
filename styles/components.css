@@ -316,3 +316,35 @@ input[type="range"]::-moz-range-thumb {
   z-index: 100;
   box-shadow: var(--shadow-lg);
 }
+
+/* Desktop symbol insertion; native buttons preserve keyboard navigation. */
+.symbol-picker { position: relative; flex: 0 0 auto; }
+.symbol-panel {
+  position: absolute; top: calc(100% + 8px); right: 0;
+  display: grid; grid-template-columns: repeat(4, 40px); gap: 6px;
+  padding: 10px; background: var(--panel); border: 1px solid var(--line);
+  border-radius: var(--r); box-shadow: var(--shadow-lg);
+}
+.symbol-panel[hidden] { display: none; }
+.symbol-panel .btn { font-family: var(--math); font-size: 20px; min-height: 40px; padding: 4px; }
+@media (hover: none) and (pointer: coarse) {
+  .symbol-picker { display: none; }
+}
+
+/* Passive first-visit help: content underneath remains interactive. */
+.symbol-hint {
+  position: absolute; top: calc(100% + 12px); right: -64px;
+  width: min(272px, calc(100vw - 24px)); padding: 13px 15px;
+  border: 1px solid var(--line-strong); border-radius: var(--r);
+  background: var(--panel); color: var(--text-2); box-shadow: var(--shadow);
+  font-size: 12px; line-height: 1.55; pointer-events: none;
+}
+.symbol-hint[hidden] { display: none; }
+.symbol-hint::before {
+  content: ''; position: absolute; top: -6px; right: 75px;
+  width: 10px; height: 10px; transform: rotate(45deg);
+  background: var(--panel); border-top: 1px solid var(--line-strong);
+  border-left: 1px solid var(--line-strong);
+}
+.symbol-hint p { margin: 0 0 7px; }
+.symbol-hint .btn { pointer-events: auto; color: var(--accent); }

@@ -12,6 +12,8 @@
 <link rel="stylesheet" href="styles/components.css">
 <link rel="stylesheet" href="styles/math.css">
 <link rel="stylesheet" href="styles/content.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
 
 <script>
   // Evita el parpadeo de tema antes de que cargue la aplicación.
@@ -37,8 +39,33 @@
     </div>
     <div class="tool-title" id="tool-title">Inicio</div>
     <div class="spacer"></div>
+    <select class="language-select" id="language-select" aria-label="Idioma" data-i18n-aria-label="language">
+      <option value="es" lang="es" data-language-name="Español">ES</option>
+      <option value="en" lang="en" data-language-name="English">EN</option>
+    </select>
+    <div class="symbol-picker">
+      <button class="btn icon" id="symbol-btn" aria-label="Insertar símbolo" data-i18n-aria-label="symbols" title="Insertar símbolo" data-i18n-title="symbols" aria-expanded="false" aria-controls="symbol-panel">Ω</button>
+      <aside class="symbol-hint" id="symbol-hint" aria-label="Consejo de símbolos" data-i18n-aria-label="symbolHintTitle" hidden>
+        <p id="symbol-hint-text" data-i18n="symbolHint">Inserta símbolos como π o √. Primero haz clic en un campo matemático; después pulsa Ω y elige un símbolo.</p>
+        <button class="btn ghost sm" id="symbol-hint-dismiss" type="button" data-i18n="symbolHintDismiss">Entendido</button>
+      </aside>
+      <div class="symbol-panel" id="symbol-panel" role="group" aria-label="Símbolos matemáticos" data-i18n-aria-label="symbolGroup" hidden>
+        <button class="btn" type="button">²</button>
+        <button class="btn" type="button">√</button>
+        <button class="btn" type="button">π</button>
+        <button class="btn" type="button">∑</button>
+        <button class="btn" type="button">∫</button>
+        <button class="btn" type="button">≤</button>
+        <button class="btn" type="button">≥</button>
+        <button class="btn" type="button">≠</button>
+        <button class="btn" type="button">±</button>
+        <button class="btn" type="button">∞</button>
+        <button class="btn" type="button">θ</button>
+        <button class="btn" type="button">Δ</button>
+      </div>
+    </div>
     <div class="profile-switcher">
-      <button class="btn ghost profile-btn" id="profile-btn" aria-haspopup="true" aria-expanded="false" title="Cambiar de perfil">
+      <button class="btn ghost profile-btn" id="profile-btn" data-i18n-title="profile" data-i18n-aria-label="profile" aria-haspopup="true" aria-expanded="false" title="Cambiar de perfil">
         <span class="profile-dot"></span>
         <span id="profile-btn-name">Perfil</span>
       </button>
@@ -52,48 +79,48 @@
     <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
 
     <!-- ── Navegación ──────────────────────────────────── -->
-    <nav class="sidebar" id="app-sidebar" aria-label="Secciones">
+    <nav class="sidebar" id="app-sidebar" data-i18n-aria-label="sections" aria-label="Secciones">
       <button class="nav-item" data-go="home" aria-current="true">
-        <span class="ic" aria-hidden="true">⌂</span><span>Inicio</span>
+        <i class="fa-solid fa-house"></i><span data-i18n="tool.home">Inicio</span>
       </button>
 
-      <div class="group-label">Herramientas</div>
+      <div class="group-label" data-i18n="tools">Herramientas</div>
       <button class="nav-item" data-go="graph">
-        <span class="ic" aria-hidden="true">∿</span><span>Graficador</span>
+        <span class="ic" aria-hidden="true">∿</span><span data-i18n="nav.graph">Graficador</span>
       </button>
       <button class="nav-item" data-go="geometry">
-        <span class="ic" aria-hidden="true">△</span><span>Geometría</span>
+        <span class="ic" aria-hidden="true">△</span><span data-i18n="nav.geometry">Geometría</span>
       </button>
       <button class="nav-item" data-go="calculator">
-        <span class="ic" aria-hidden="true">±</span><span>Calculadora</span>
+        <span class="ic" aria-hidden="true">±</span><span data-i18n="tool.calculator">Calculadora</span>
       </button>
       <button class="nav-item" data-go="algebra">
-        <span class="ic" aria-hidden="true">∫</span><span>Álgebra y cálculo</span>
+        <span class="ic" aria-hidden="true">∫</span><span data-i18n="tool.algebra">Álgebra y cálculo</span>
       </button>
 
-      <div class="group-label">Aprender</div>
+      <div class="group-label" data-i18n="learning">Aprender</div>
       <button class="nav-item" data-go="learn">
-        <span class="ic" aria-hidden="true">✎</span><span>Aprende</span>
+       <i class="fa-solid fa-pencil"></i><span data-i18n="tool.learn">Aprende</span>
       </button>
       <button class="nav-item" data-go="practice">
-        <span class="ic" aria-hidden="true">✓</span><span>Practica</span>
+       <i class="fa-solid fa-check"></i><span data-i18n="tool.practice">Practica</span>
       </button>
 
-      <div class="group-label">Evalúa</div>
+      <div class="group-label" data-i18n="assess">Evalúa</div>
       <button class="nav-item" data-go="exams">
-        <span class="ic" aria-hidden="true">🎓</span><span>Mini exámenes</span>
+      <i class="fa-solid fa-graduation-cap"></i> <span data-i18n="tool.exams">Mini exámenes</span>
       </button>
     </nav>
 
     <main class="workspace">
 
       <!-- ══ Inicio ═══════════════════════════════════════ -->
-      <section class="tool active" data-tool="home" aria-label="Inicio">
+      <section class="tool active" data-tool="home" data-i18n-aria-label="tool.home" aria-label="Inicio">
         <div class="content-pane" id="home-content"></div>
       </section>
 
       <!-- ══ Graficador ═══════════════════════════════════ -->
-      <section class="tool" data-tool="graph" aria-label="Graficador">
+      <section class="tool" data-tool="graph" data-i18n-aria-label="tool.graph" aria-label="Graficador">
         <div class="split">
           <div class="side">
             <div class="panel-head">
@@ -142,7 +169,7 @@
       </section>
 
       <!-- ══ Geometría ════════════════════════════════════ -->
-      <section class="tool" data-tool="geometry" aria-label="Geometría">
+      <section class="tool" data-tool="geometry" data-i18n-aria-label="tool.geometry" aria-label="Geometría">
         <div class="split">
           <div class="side">
             <div class="panel-head"><h2>Construir</h2></div>
@@ -187,13 +214,13 @@
       </section>
 
       <!-- ══ Calculadora ══════════════════════════════════ -->
-      <section class="tool" data-tool="calculator" aria-label="Calculadora">
+      <section class="tool" data-tool="calculator" data-i18n-aria-label="tool.calculator" aria-label="Calculadora">
         <div class="columns">
           <div class="col">
             <div class="panel-body">
               <div class="card">
                 <div style="display:flex; gap:8px; align-items:center">
-                  <input class="field" id="calc-input" placeholder="2 + 3/4,  sqrt(50),  sin(pi/6),  2x + 5 = 17"
+                  <input class="field" id="calc-input" data-math-input placeholder="2 + 3/4,  sqrt(50),  sin(pi/6),  2x + 5 = 17"
                          spellcheck="false" aria-label="Expresión a calcular">
                   <button class="btn" id="calc-deg" title="Grados o radianes">RAD</button>
                   <button class="btn primary" id="calc-eval">=</button>
@@ -222,13 +249,13 @@
       </section>
 
       <!-- ══ Álgebra y cálculo ════════════════════════════ -->
-      <section class="tool" data-tool="algebra" aria-label="Álgebra y cálculo">
+      <section class="tool" data-tool="algebra" data-i18n-aria-label="tool.algebra" aria-label="Álgebra y cálculo">
         <div class="columns">
           <div class="col">
             <div class="panel-body">
               <div class="card">
                 <label class="label" for="alg-input">Expresión o ecuación</label>
-                <input class="field" id="alg-input" spellcheck="false"
+                <input class="field" id="alg-input" data-math-input spellcheck="false"
                        placeholder="x^2 - 5x + 6 = 0">
                 <div class="math-block" id="alg-preview" style="margin-top:10px; min-height:30px"></div>
                 <div class="btn-row" id="alg-ops" style="margin-top:4px"></div>
@@ -274,7 +301,7 @@
       </section>
 
       <!-- ══ Aprende ══════════════════════════════════════ -->
-      <section class="tool" data-tool="learn" aria-label="Aprende">
+      <section class="tool" data-tool="learn" data-i18n-aria-label="tool.learn" aria-label="Aprende">
         <div class="split">
           <div class="side">
             <div class="panel-head"><h2>Contenidos</h2></div>
@@ -287,12 +314,12 @@
       </section>
 
       <!-- ══ Practica ═════════════════════════════════════ -->
-      <section class="tool" data-tool="practice" aria-label="Practica">
+      <section class="tool" data-tool="practice" data-i18n-aria-label="tool.practice" aria-label="Practica">
         <div class="content-pane" id="practice-content"></div>
       </section>
 
       <!-- ══ Mini exámenes ════════════════════════════════ -->
-      <section class="tool" data-tool="exams" aria-label="Mini exámenes">
+      <section class="tool" data-tool="exams" data-i18n-aria-label="tool.exams" aria-label="Mini exámenes">
         <div class="content-pane" id="exam-content"></div>
       </section>
 
@@ -328,6 +355,8 @@
 <script src="js/content/exercises.js"></script>
 
 <!-- ── Interfaz ────────────────────────────────────────── -->
+<script src="js/ui/i18n.js"></script>
+<script src="js/ui/symbol-picker.js"></script>
 <script src="js/ui/home.js"></script>
 <script src="js/ui/graph.js"></script>
 <script src="js/ui/geometry.js"></script>

@@ -95,6 +95,7 @@
 
       var input = document.createElement('input');
       input.className = 'expr-input';
+      input.setAttribute('data-math-input', '');
       input.value = row.src;
       input.placeholder = 'f(x) = x^2';
       input.spellcheck = false;

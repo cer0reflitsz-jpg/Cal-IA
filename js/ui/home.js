@@ -8,71 +8,71 @@
 
   var FEATURES = [
     {
-      go: 'graph', icon: '∿', title: 'Graficador',
-      desc: 'Escribe una o varias funciones y se dibujan al instante. Zoom, desplazamiento, sliders para parámetros libres, derivada con un clic y área sombreada bajo la curva.',
-      ex: 'f(x) = a·x² + b·x + c'
+      go: 'graph', icon: '∿', title: 'home.feature.0.title',
+      desc: 'home.feature.0.desc',
+      ex: 'home.feature.0.ex'
     },
     {
-      go: 'geometry', icon: '△', title: 'Geometría',
-      desc: 'Construye puntos, segmentos, rectas, circunferencias y polígonos. Arrastra un punto y todas las medidas — distancia, pendiente, área, ángulos — se recalculan solas.',
-      ex: 'triángulo 3-4-5, círculo, ángulos'
+      go: 'geometry', icon: '△', title: 'home.feature.1.title',
+      desc: 'home.feature.1.desc',
+      ex: 'home.feature.1.ex'
     },
     {
-      go: 'calculator', icon: '±', title: 'Calculadora',
-      desc: 'Aritmética con fracciones exactas (no en coma flotante), potencias, raíces, trigonometría y ecuaciones simples, con historial.',
-      ex: '1/3 + 1/6,  √50,  2x + 5 = 17'
+      go: 'calculator', icon: '±', title: 'home.feature.2.title',
+      desc: 'home.feature.2.desc',
+      ex: 'home.feature.2.ex'
     },
     {
-      go: 'algebra', icon: '∫', title: 'Álgebra y cálculo',
-      desc: 'Simplifica, desarrolla, factoriza y resuelve ecuaciones; deriva e integra. Cada resultado se muestra con el procedimiento paso a paso y una verificación.',
-      ex: 'factorizar x²−5x+6,  d/dx sin(2x)'
+      go: 'algebra', icon: '∫', title: 'home.feature.3.title',
+      desc: 'home.feature.3.desc',
+      ex: 'home.feature.3.ex'
     },
     {
-      go: 'learn', icon: '✎', title: 'Aprende',
-      desc: 'La teoría detrás de cada herramienta: intuición, explicación y un ejemplo resuelto para cada tema, calculado en vivo con el mismo motor que el resto de la aplicación.',
-      ex: 'fracciones, ecuaciones, derivadas…'
+      go: 'learn', icon: '✎', title: 'home.feature.4.title',
+      desc: 'home.feature.4.desc',
+      ex: 'home.feature.4.ex'
     }
   ];
 
   var FACTS = [
-    'Los resultados son exactos cuando es posible: <b>1/3 + 1/6</b> da <b>1/2</b>, no <b>0.4999999999999999</b>. La aritmética se hace con fracciones, no con coma flotante.',
-    'Cada ecuación resuelta se comprueba sustituyendo la solución de vuelta, y cada integral se comprueba derivando el resultado. Si algo no se puede verificar, la aplicación lo dice en vez de inventar una respuesta.',
-    'No hay cuentas ni servidor: todo el cálculo ocurre en tu navegador. Nada de lo que escribes se envía a ningún sitio.',
-    'La sección <b>Aprende</b> y las herramientas están conectadas: cada tema tiene un botón que abre ese mismo ejemplo en el graficador, la calculadora, álgebra o geometría.',
-    'Funciona en escritorio, tablet y teléfono, con modo claro y oscuro.'
+    'home.fact.0',
+    'home.fact.1',
+    'home.fact.2',
+    'home.fact.3',
+    'home.fact.4'
   ];
 
   function render() {
     var html = '<div class="inner">';
 
     html += '<div class="hero">' +
-      '<div class="kicker">Laboratorio de matemáticas</div>' +
+      '<div class="kicker">' + MP.i18n.t('home.kicker') + '</div>' +
       '<h1>MathPath</h1>' +
-      '<p class="tagline">Una herramienta interactiva para calcular, graficar, construir y resolver matemáticas — no una página que habla sobre matemáticas. Cada botón hace algo real, y cada resultado está verificado.</p>' +
+      '<p class="tagline">' + MP.i18n.t('home.tagline') + '</p>' +
       '<div class="stat-row">' +
-      '<span class="chip accent">4 herramientas</span>' +
-      '<span class="chip">19 temas explicados</span>' +
-      '<span class="chip">sin librerías externas</span>' +
+      '<span class="chip accent">' + MP.i18n.t('home.tools') + '</span>' +
+      '<span class="chip">' + MP.i18n.t('home.topics') + '</span>' +
+      '<span class="chip">' + MP.i18n.t('home.libraries') + '</span>' +
       '</div>' +
       '</div>';
 
-    html += '<div class="section-heading">Qué hace cada sección</div>';
+    html += '<div class="section-heading">' + MP.i18n.t('home.sections') + '</div>';
     html += '<div class="feature-grid">';
     FEATURES.forEach(function (f) {
       html += '<div class="feature-card">' +
         '<div class="fi">' + f.icon + '</div>' +
-        '<h3>' + f.title + '</h3>' +
-        '<p>' + f.desc + '</p>' +
-        '<div class="ex">' + f.ex + '</div>' +
-        '<button class="btn sm" data-open-tool="' + f.go + '">Abrir</button>' +
+        '<h3>' + MP.i18n.t(f.title) + '</h3>' +
+        '<p>' + MP.i18n.t(f.desc) + '</p>' +
+        '<div class="ex">' + MP.i18n.t(f.ex) + '</div>' +
+        '<button class="btn sm" data-open-tool="' + f.go + '">' + MP.i18n.t('home.open') + '</button>' +
         '</div>';
     });
     html += '</div>';
 
-    html += '<div class="section-heading">Cómo funciona por dentro</div>';
+    html += '<div class="section-heading">' + MP.i18n.t('home.inside') + '</div>';
     html += '<div class="fact-list">';
     FACTS.forEach(function (f) {
-      html += '<div class="fact-row"><span class="fmark">✓</span><span>' + f + '</span></div>';
+      html += '<div class="fact-row"><span class="fmark">✓</span><span>' + MP.i18n.t(f) + '</span></div>';
     });
     html += '</div>';
 
@@ -88,6 +88,7 @@
   function init() {
     el.content = document.getElementById('home-content');
     render();
+    document.addEventListener('mp:languagechange', render);
   }
 
   MP.tools = MP.tools || {};
