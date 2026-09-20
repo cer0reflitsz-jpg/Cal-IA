@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MathPath — Laboratorio de matemáticas</title>
+<meta name="description" content="Herramienta interactiva de matemáticas: graficador, geometría dinámica, calculadora simbólica, álgebra y cálculo.">
+
+<link rel="stylesheet" href="styles/tokens.css">
+<link rel="stylesheet" href="styles/base.css">
+<link rel="stylesheet" href="styles/layout.css">
+<link rel="stylesheet" href="styles/components.css">
+<link rel="stylesheet" href="styles/math.css">
+<link rel="stylesheet" href="styles/content.css">
+
+<script>
+  // Evita el parpadeo de tema antes de que cargue la aplicación.
+  try {
+    var t = localStorage.getItem('mp.theme');
+    if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', t);
+  } catch (e) {}
+</script>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ── Barra superior ─────────────────────────────────── -->
+  <header class="topbar">
+    <button class="btn icon menu-btn" id="menu-btn" aria-label="Abrir menú de secciones" aria-expanded="false" aria-controls="app-sidebar">
+      <span class="menu-glyph" aria-hidden="true"></span>
+    </button>
+    <div class="brand">
+      <span class="glyph" aria-hidden="true">ƒ</span>
+      <span class="name">MathPath</span>
+    </div>
+    <div class="tool-title" id="tool-title">Inicio</div>
+    <div class="spacer"></div>
+    <div class="profile-switcher">
+      <button class="btn ghost profile-btn" id="profile-btn" aria-haspopup="true" aria-expanded="false" title="Cambiar de perfil">
+        <span class="profile-dot"></span>
+        <span id="profile-btn-name">Perfil</span>
+      </button>
+      <div class="profile-panel" id="profile-panel" hidden></div>
+    </div>
+    <button class="btn icon" id="theme-btn" title="Cambiar tema" aria-label="Cambiar tema">☾</button>
+  </header>
+
+  <div class="body">
+
+    <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+
+    <!-- ── Navegación ──────────────────────────────────── -->
+    <nav class="sidebar" id="app-sidebar" aria-label="Secciones">
+      <button class="nav-item" data-go="home" aria-current="true">
+        <span class="ic" aria-hidden="true">⌂</span><span>Inicio</span>
+      </button>
+
+      <div class="group-label">Herramientas</div>
+      <button class="nav-item" data-go="graph">
+        <span class="ic" aria-hidden="true">∿</span><span>Graficador</span>
+      </button>
+      <button class="nav-item" data-go="geometry">
+        <span class="ic" aria-hidden="true">△</span><span>Geometría</span>
+      </button>
+      <button class="nav-item" data-go="calculator">
+        <span class="ic" aria-hidden="true">±</span><span>Calculadora</span>
+      </button>
+      <button class="nav-item" data-go="algebra">
+        <span class="ic" aria-hidden="true">∫</span><span>Álgebra y cálculo</span>
+      </button>
+
+      <div class="group-label">Aprender</div>
+      <button class="nav-item" data-go="learn">
+        <span class="ic" aria-hidden="true">✎</span><span>Aprende</span>
+      </button>
+      <button class="nav-item" data-go="practice">
+        <span class="ic" aria-hidden="true">✓</span><span>Practica</span>
+      </button>
+
+      <div class="group-label">Evalúa</div>
+      <button class="nav-item" data-go="exams">
+        <span class="ic" aria-hidden="true">🎓</span><span>Mini exámenes</span>
+      </button>
+    </nav>
+
+    <main class="workspace">
+
+      <!-- ══ Inicio ═══════════════════════════════════════ -->
+      <section class="tool active" data-tool="home" aria-label="Inicio">
+        <div class="content-pane" id="home-content"></div>
+      </section>
+
+      <!-- ══ Graficador ═══════════════════════════════════ -->
+      <section class="tool" data-tool="graph" aria-label="Graficador">
+        <div class="split">
+          <div class="side">
+            <div class="panel-head">
+              <h2>Funciones</h2>
+              <div class="spacer" style="flex:1"></div>
+              <button class="btn sm primary" id="g-add">+ Función</button>
+            </div>
+            <div class="panel-body" id="g-list"></div>
+            <div class="panel-foot">
+              <div class="toggle-row">
+                <span>Cuadrícula</span>
+                <label class="switch">
+                  <input type="checkbox" id="g-grid" checked aria-label="Mostrar cuadrícula">
+                  <span class="track"></span><span class="thumb"></span>
+                </label>
+              </div>
+              <div class="toggle-row">
+                <span>Seguir la curva</span>
+                <label class="switch">
+                  <input type="checkbox" id="g-trace" checked aria-label="Seguir la curva con el cursor">
+                  <span class="track"></span><span class="thumb"></span>
+                </label>
+              </div>
+              <div class="label" style="margin-top:10px">Ejemplos</div>
+              <div class="btn-row">
+                <button class="btn sm" data-g-example="h(x) = sin(x)">sin x</button>
+                <button class="btn sm" data-g-example="f(x) = a*x^2 + b*x + c">ax²+bx+c</button>
+                <button class="btn sm" data-g-example="x^2 + y^2 = 25">x²+y²=25</button>
+                <button class="btn sm" data-g-example="f(x) = 1/x">1/x</button>
+                <button class="btn sm" data-g-example="f(x) = e^x">eˣ</button>
+              </div>
+            </div>
+          </div>
+          <div class="main">
+            <div class="canvas-wrap">
+              <canvas id="g-canvas"></canvas>
+              <div class="canvas-tools">
+                <button class="btn icon" id="g-zoom-in" title="Acercar" aria-label="Acercar">+</button>
+                <button class="btn icon" id="g-zoom-out" title="Alejar" aria-label="Alejar">−</button>
+                <button class="btn icon" id="g-reset" title="Centrar" aria-label="Centrar">⌖</button>
+              </div>
+              <div class="canvas-overlay br" id="g-readout"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ Geometría ════════════════════════════════════ -->
+      <section class="tool" data-tool="geometry" aria-label="Geometría">
+        <div class="split">
+          <div class="side">
+            <div class="panel-head"><h2>Construir</h2></div>
+            <div class="panel-body">
+              <div class="tool-grid" id="geo-tools"></div>
+              <div class="hint-box" id="geo-help"></div>
+
+              <div class="toggle-row">
+                <span>Ajustar a la cuadrícula</span>
+                <label class="switch">
+                  <input type="checkbox" id="geo-snap" checked aria-label="Ajustar a la cuadrícula">
+                  <span class="track"></span><span class="thumb"></span>
+                </label>
+              </div>
+              <div class="toggle-row">
+                <span>Cuadrícula</span>
+                <label class="switch">
+                  <input type="checkbox" id="geo-grid" checked aria-label="Mostrar cuadrícula">
+                  <span class="track"></span><span class="thumb"></span>
+                </label>
+              </div>
+              <div class="btn-row" style="margin:10px 0 14px">
+                <button class="btn sm" id="geo-demo">Ejemplo</button>
+                <button class="btn sm danger" id="geo-clear">Vaciar</button>
+              </div>
+
+              <div class="label">Objetos y medidas</div>
+              <div id="geo-objects"></div>
+            </div>
+          </div>
+          <div class="main">
+            <div class="canvas-wrap">
+              <canvas id="geo-canvas"></canvas>
+              <div class="canvas-tools">
+                <button class="btn icon" id="geo-zoom-in" title="Acercar" aria-label="Acercar">+</button>
+                <button class="btn icon" id="geo-zoom-out" title="Alejar" aria-label="Alejar">−</button>
+                <button class="btn icon" id="geo-reset" title="Centrar" aria-label="Centrar">⌖</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ Calculadora ══════════════════════════════════ -->
+      <section class="tool" data-tool="calculator" aria-label="Calculadora">
+        <div class="columns">
+          <div class="col">
+            <div class="panel-body">
+              <div class="card">
+                <div style="display:flex; gap:8px; align-items:center">
+                  <input class="field" id="calc-input" placeholder="2 + 3/4,  sqrt(50),  sin(pi/6),  2x + 5 = 17"
+                         spellcheck="false" aria-label="Expresión a calcular">
+                  <button class="btn" id="calc-deg" title="Grados o radianes">RAD</button>
+                  <button class="btn primary" id="calc-eval">=</button>
+                </div>
+                <div class="math-block" id="calc-preview" style="margin-top:10px; min-height:28px"></div>
+              </div>
+
+              <div class="keypad" id="calc-keypad" style="margin-bottom:12px"></div>
+
+              <div class="btn-row" style="margin-bottom:12px">
+                <button class="btn sm" data-calc-example="1/3 + 1/6">1/3 + 1/6</button>
+                <button class="btn sm" data-calc-example="sqrt(50)">√50</button>
+                <button class="btn sm" data-calc-example="2^10">2¹⁰</button>
+                <button class="btn sm" data-calc-example="sin(pi/6)">sin(π/6)</button>
+                <button class="btn sm" data-calc-example="2x + 5 = 17">2x+5=17</button>
+              </div>
+
+              <div id="calc-output"></div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="panel-head"><h2>Historial</h2></div>
+            <div class="panel-body" style="padding:0" id="calc-history"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ Álgebra y cálculo ════════════════════════════ -->
+      <section class="tool" data-tool="algebra" aria-label="Álgebra y cálculo">
+        <div class="columns">
+          <div class="col">
+            <div class="panel-body">
+              <div class="card">
+                <label class="label" for="alg-input">Expresión o ecuación</label>
+                <input class="field" id="alg-input" spellcheck="false"
+                       placeholder="x^2 - 5x + 6 = 0">
+                <div class="math-block" id="alg-preview" style="margin-top:10px; min-height:30px"></div>
+                <div class="btn-row" id="alg-ops" style="margin-top:4px"></div>
+              </div>
+              <div id="alg-output"></div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="panel-head"><h2>Ejemplos</h2></div>
+            <div class="panel-body">
+              <div class="label">Álgebra</div>
+              <div class="btn-row" style="margin-bottom:14px">
+                <button class="btn sm" data-alg-example="(x+2)^2" data-alg-op="expand">(x+2)²</button>
+                <button class="btn sm" data-alg-example="x^2 - 9" data-alg-op="factor">x²−9</button>
+                <button class="btn sm" data-alg-example="x^2 + 5x + 6" data-alg-op="factor">x²+5x+6</button>
+                <button class="btn sm" data-alg-example="(x^2-1)/(x-1)" data-alg-op="simplify">(x²−1)/(x−1)</button>
+              </div>
+              <div class="label">Ecuaciones</div>
+              <div class="btn-row" style="margin-bottom:14px">
+                <button class="btn sm" data-alg-example="2x + 5 = 15" data-alg-op="solve">2x+5=15</button>
+                <button class="btn sm" data-alg-example="x^2 - 5x + 6 = 0" data-alg-op="solve">x²−5x+6=0</button>
+                <button class="btn sm" data-alg-example="x^3 - 6x^2 + 11x - 6 = 0" data-alg-op="solve">cúbica</button>
+                <button class="btn sm" data-alg-example="x^2 + 1 = 0" data-alg-op="solve">x²+1=0</button>
+              </div>
+              <div class="label">Cálculo</div>
+              <div class="btn-row" style="margin-bottom:14px">
+                <button class="btn sm" data-alg-example="x^2" data-alg-op="derive">d/dx x²</button>
+                <button class="btn sm" data-alg-example="sin(x)*x^3" data-alg-op="derive">producto</button>
+                <button class="btn sm" data-alg-example="sin(3x + 1)" data-alg-op="derive">cadena</button>
+                <button class="btn sm" data-alg-example="x^2" data-alg-op="integrate">∫x² dx</button>
+                <button class="btn sm" data-alg-example="cos(2x)" data-alg-op="integrate">∫cos2x dx</button>
+              </div>
+              <div class="hint-box small">
+                Escribe con notación normal: <span class="mono">^</span> para potencias,
+                <span class="mono">sqrt( )</span> o <span class="mono">√</span> para raíces,
+                <span class="mono">pi</span> y <span class="mono">e</span> para las constantes.
+                La multiplicación implícita funciona: <span class="mono">3x</span>,
+                <span class="mono">(x+1)(x-2)</span>.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ Aprende ══════════════════════════════════════ -->
+      <section class="tool" data-tool="learn" aria-label="Aprende">
+        <div class="split">
+          <div class="side">
+            <div class="panel-head"><h2>Contenidos</h2></div>
+            <div class="panel-body scroll" id="learn-list" style="padding:4px 6px"></div>
+          </div>
+          <div class="main">
+            <div class="content-pane" id="learn-content"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ Practica ═════════════════════════════════════ -->
+      <section class="tool" data-tool="practice" aria-label="Practica">
+        <div class="content-pane" id="practice-content"></div>
+      </section>
+
+      <!-- ══ Mini exámenes ════════════════════════════════ -->
+      <section class="tool" data-tool="exams" aria-label="Mini exámenes">
+        <div class="content-pane" id="exam-content"></div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<!-- ── Núcleo matemático ───────────────────────────────── -->
+<script src="js/core/rational.js"></script>
+<script src="js/core/ast.js"></script>
+<script src="js/core/parser.js"></script>
+<script src="js/core/simplify.js"></script>
+<script src="js/core/evaluate.js"></script>
+<script src="js/core/render.js"></script>
+<script src="js/core/polynomial.js"></script>
+<script src="js/core/algebra.js"></script>
+<script src="js/core/calculus.js"></script>
+
+<!-- ── Motores de dibujo ───────────────────────────────── -->
+<script src="js/plot/viewport.js"></script>
+<script src="js/plot/plotter.js"></script>
+<script src="js/geometry/model.js"></script>
+<script src="js/geometry/canvas.js"></script>
+
+<!-- ── Motor de ejercicios (sin DOM) ───────────────────── -->
+<script src="js/engine/exercise-engine.js"></script>
+
+<!-- ── Contenido educativo ─────────────────────────────── -->
+<script src="js/content/profiles.js"></script>
+<script src="js/content/topics.js"></script>
+<script src="js/content/exercises.js"></script>
+
+<!-- ── Interfaz ────────────────────────────────────────── -->
+<script src="js/ui/home.js"></script>
+<script src="js/ui/graph.js"></script>
+<script src="js/ui/geometry.js"></script>
+<script src="js/ui/calculator.js"></script>
+<script src="js/ui/algebra.js"></script>
+<script src="js/ui/learn.js"></script>
+<script src="js/ui/exercise-widget.js"></script>
+<script src="js/ui/practice.js"></script>
+<script src="js/ui/exams.js"></script>
+<script src="js/ui/account.js"></script>
+<script src="js/ui/app.js"></script>
+
+</body>
+</html>

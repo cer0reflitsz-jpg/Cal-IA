@@ -1,0 +1,215 @@
+/* ── Inicio y Aprende ─────────────────────────────────────────
+   Contenido a página completa con scroll propio (no canvas).    */
+
+.content-pane {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  padding: 28px 30px 60px;
+}
+.content-pane .inner { max-width: 860px; margin: 0 auto; }
+
+/* Inicio */
+.hero { margin-bottom: 30px; }
+.hero .kicker {
+  font-size: 11.5px; text-transform: uppercase; letter-spacing: .12em;
+  color: var(--accent); font-weight: 700; margin-bottom: 8px;
+}
+.hero h1 { font-size: 27px; margin-bottom: 10px; }
+.hero p.tagline { font-size: 15px; color: var(--text-2); max-width: 62ch; }
+
+.stat-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+.stat-row .chip { font-size: 12px; padding: 5px 11px; }
+
+.section-heading {
+  font-size: 12px; text-transform: uppercase; letter-spacing: .09em;
+  color: var(--muted); font-weight: 700; margin: 30px 0 12px;
+}
+.section-heading:first-child { margin-top: 0; }
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 12px;
+}
+.feature-card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  padding: 16px 16px 14px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.feature-card .fi {
+  width: 34px; height: 34px;
+  display: grid; place-items: center;
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-radius: 9px;
+  font-family: var(--math); font-style: italic; font-size: 18px;
+}
+.feature-card h3 { font-size: 14.5px; }
+.feature-card p { font-size: 12.8px; color: var(--text-2); flex: 1; }
+.feature-card .ex { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.feature-card .btn { align-self: flex-start; margin-top: 2px; }
+
+.fact-list { display: flex; flex-direction: column; gap: 10px; }
+.fact-row {
+  display: flex; gap: 11px; align-items: flex-start;
+  font-size: 13px; color: var(--text-2);
+}
+.fact-row .fmark {
+  flex: 0 0 20px; height: 20px;
+  display: grid; place-items: center;
+  background: var(--accent-soft); color: var(--accent);
+  border-radius: 50%; font-size: 11px; font-weight: 700;
+  margin-top: 1px;
+}
+.fact-row b { color: var(--text); }
+
+/* Aprende: lista de temas */
+.lesson-cat {
+  font-size: 10.5px; text-transform: uppercase; letter-spacing: .09em;
+  color: var(--muted); font-weight: 700; padding: 13px 10px 5px;
+}
+.lesson-cat:first-child { padding-top: 4px; }
+.topic-btn {
+  display: block; width: 100%; text-align: left;
+  padding: 7px 10px; border-radius: var(--r-sm);
+  border: none; background: none; cursor: pointer;
+  font-size: 13px; color: var(--text-2);
+}
+.topic-btn:hover { background: var(--panel-2); color: var(--text); }
+.topic-btn.active { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+
+/* Aprende: contenido del tema */
+.lesson-cat-tag { margin-bottom: 8px; }
+.lesson-title { font-size: 22px; margin-bottom: 16px; }
+.lesson-block { margin-bottom: 16px; }
+.lesson-block .lb-label {
+  font-size: 11px; text-transform: uppercase; letter-spacing: .08em;
+  color: var(--accent); font-weight: 700; margin-bottom: 5px;
+}
+.lesson-block p { font-size: 14px; color: var(--text-2); line-height: 1.6; }
+
+.example-card { border-color: var(--line-strong); }
+.example-card .label { margin-bottom: 8px; }
+
+.lesson-empty {
+  display: flex; align-items: center; justify-content: center;
+  height: 100%; color: var(--muted); font-size: 13px; text-align: center;
+  padding: 30px;
+}
+
+@media (max-width: 900px) {
+  .content-pane { padding: 18px 16px 40px; }
+  .hero h1 { font-size: 22px; }
+
+  /* Objetivos táctiles más generosos que en escritorio */
+  .btn { min-height: 40px; padding: 9px 14px; }
+  .btn.sm { min-height: 34px; padding: 7px 11px; }
+  .btn.icon { width: 38px; height: 38px; min-height: 0; padding: 0; }
+  .key { padding: 12px 2px; }
+  .tool-btn { padding: 11px 4px; }
+  .expr-swatch { width: 14px; flex: 0 0 14px; }
+  .nav-item, .topic-btn, .tool-btn { min-height: 40px; }
+
+  /* Evita el zoom automático de iOS al enfocar un campo con letra pequeña */
+  .field, .expr-input { font-size: 16px; }
+}
+
+/* ── Selector de perfiles ─────────────────────────────────── */
+.profile-switcher { position: relative; margin-right: 2px; }
+.profile-btn { gap: 7px; padding: 5px 10px 5px 6px; }
+.profile-dot {
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 50%; color: #fff; font-weight: 700; letter-spacing: -.02em;
+  flex: 0 0 auto;
+}
+.profile-panel {
+  position: absolute; top: calc(100% + 8px); right: 0;
+  width: 280px; max-width: calc(100vw - 24px);
+  background: var(--panel); border: 1px solid var(--line);
+  border-radius: var(--r); box-shadow: var(--shadow-lg);
+  padding: 12px; z-index: 60;
+}
+.profile-panel-head { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); font-weight: 700; margin-bottom: 8px; }
+.profile-list { display: flex; flex-direction: column; gap: 3px; max-height: 240px; overflow-y: auto; }
+.profile-row { display: flex; align-items: center; gap: 4px; border-radius: var(--r-sm); }
+.profile-row.active { background: var(--accent-soft); }
+.profile-row-main { display: flex; align-items: center; gap: 9px; flex: 1; min-width: 0; padding: 7px 8px; border: none; background: none; cursor: pointer; border-radius: var(--r-sm); text-align: left; }
+.profile-row-main:hover { background: var(--panel-2); }
+.profile-row.active .profile-row-main:hover { background: transparent; }
+.profile-row-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; }
+.profile-row.editing { padding: 4px; gap: 6px; }
+.profile-rename-input { flex: 1; }
+.profile-panel-foot { margin-top: 8px; padding-top: 10px; border-top: 1px solid var(--line); }
+.profile-panel-note { margin-top: 10px; font-size: 11px; color: var(--muted); line-height: 1.5; }
+
+/* ── Práctica: selección de temas ─────────────────────────── */
+.practice-cat { font-size: 11px; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); font-weight: 700; margin: 14px 0 7px; }
+.practice-cat:first-child { margin-top: 0; }
+.practice-topic-grid { display: flex; flex-wrap: wrap; gap: 6px; }
+.practice-topic-chip {
+  padding: 7px 12px; border-radius: 99px; border: 1px solid var(--line-strong);
+  background: var(--panel); color: var(--text-2); font-size: 12.5px; cursor: pointer;
+}
+.practice-topic-chip:hover { background: var(--panel-2); }
+.practice-topic-chip.sel { background: var(--accent); border-color: var(--accent); color: var(--on-accent); font-weight: 600; }
+
+.practice-progress { margin-bottom: 14px; display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
+.progress-track { flex-basis: 100%; height: 7px; background: var(--panel-2); border-radius: 99px; overflow: hidden; margin-top: 6px; }
+.progress-fill { height: 100%; background: var(--accent); border-radius: 99px; transition: width .25s ease; }
+
+.result-summary { text-align: center; padding: 18px 10px; }
+.result-score { font-size: 40px; font-weight: 700; font-family: var(--mono); margin-bottom: 10px; }
+
+/* ── Widget de ejercicio ──────────────────────────────────── */
+.ex-meta { display: flex; gap: 6px; margin-bottom: 10px; }
+.ex-prompt { font-size: 16px; line-height: 1.6; margin-bottom: 14px; overflow-x: auto; }
+.ex-input { margin-bottom: 6px; }
+.ex-hints { margin-bottom: 4px; }
+.ex-feedback:empty { display: none; }
+.ex-verdict { font-weight: 700; padding: 8px 0; font-size: 14px; }
+.ex-verdict.ok { color: var(--ok); }
+.ex-verdict.bad { color: var(--danger); }
+.ex-actions { margin: 10px 0 4px; }
+.ex-procedure { margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--line); }
+.ex-done .ex-prompt { opacity: .85; }
+
+.ex-choices { display: flex; flex-direction: column; gap: 7px; }
+.ex-choices.tf { flex-direction: row; }
+.ex-choice {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px; border: 1px solid var(--line-strong); border-radius: var(--r-sm);
+  background: var(--panel); cursor: pointer; text-align: left; font-size: 13.5px;
+}
+.ex-choices.tf .ex-choice { flex: 1; justify-content: center; font-weight: 600; }
+.ex-choice:hover { background: var(--panel-2); }
+.ex-choice.picked { border-color: var(--accent); background: var(--accent-soft); }
+.ex-choice-letter {
+  width: 22px; height: 22px; flex: 0 0 22px; display: grid; place-items: center;
+  border-radius: 50%; background: var(--panel-2); font-size: 11px; font-weight: 700; color: var(--muted);
+}
+.ex-choice.picked .ex-choice-letter { background: var(--accent); color: var(--on-accent); }
+
+/* ── Mini exámenes ────────────────────────────────────────── */
+.exam-topic-list { display: flex; flex-direction: column; gap: 2px; }
+.exam-topic-check { display: flex; align-items: center; gap: 9px; padding: 5px 4px; font-size: 13px; cursor: pointer; }
+.exam-topic-check input { width: 16px; height: 16px; }
+.exam-result-head { font-size: 19px; font-weight: 700; margin-bottom: 12px; }
+.exam-review-item { border: 1px solid var(--line); border-radius: var(--r-sm); margin-bottom: 6px; overflow: hidden; }
+.exam-review-head {
+  width: 100%; display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px; border: none; background: var(--panel); cursor: pointer; text-align: left; font-size: 13px;
+}
+.exam-review-head:hover { background: var(--panel-2); }
+.exam-review-head .ok { color: var(--ok); font-weight: 700; }
+.exam-review-head .bad { color: var(--danger); font-weight: 700; }
+.exam-review-prompt { flex: 1; overflow-x: auto; }
+.exam-review-body { padding: 4px 14px 14px; border-top: 1px dashed var(--line); }
+
+@media (max-width: 640px) {
+  .profile-panel { position: fixed; top: 56px; right: 8px; left: 8px; width: auto; }
+  .ex-choices.tf { flex-direction: column; }
+  .exam-topic-list { columns: 1; }
+}

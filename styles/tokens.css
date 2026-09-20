@@ -1,0 +1,91 @@
+/* ── Tokens de diseño ─────────────────────────────────────────
+   Todos los colores y medidas viven aquí. Ningún otro archivo
+   debe declarar un color literal.                              */
+
+:root {
+  /* superficies */
+  --bg:          #f6f8f7;
+  --panel:       #ffffff;
+  --panel-2:     #eef1f0;
+  --panel-3:     #e4e9e7;
+  --line:        #dde3e1;
+  --line-strong: #c6cfcc;
+
+  /* texto */
+  --text:        #12181a;
+  --text-2:      #3d4649;
+  --muted:       #6d7679;
+
+  /* acento e intención */
+  --accent:      #0e7c66;
+  --accent-2:    #0b6353;
+  --accent-soft: #e0f0eb;
+  --on-accent:   #ffffff;
+  --ok:          #1b7a4b;
+  --warn:        #8a5a1a;
+  --danger:      #b3261e;
+  --danger-soft: #fbe9e7;
+
+  /* lienzo matemático */
+  --grid:        #e2e7e5;
+  --grid-strong: #cbd4d1;
+  --axis:        #55605f;
+  --canvas-bg:   #ffffff;
+  --geo-fill:    rgba(14,124,102,.10);
+  --geo-point:   #0e7c66;
+  --geo-sel:     #b3521e;
+
+  /* paleta de curvas */
+  --c1: #0e7c66;  --c2: #2563a8;  --c3: #b3521e;
+  --c4: #7a3fa0;  --c5: #b3261e;  --c6: #0f7a86;
+  --c7: #6b7a16;  --c8: #a03f6e;
+
+  /* forma */
+  --r:    10px;
+  --r-sm: 7px;
+  --r-lg: 14px;
+  --shadow:    0 1px 2px rgba(0,0,0,.05), 0 6px 18px rgba(0,0,0,.05);
+  --shadow-lg: 0 2px 6px rgba(0,0,0,.07), 0 18px 40px rgba(0,0,0,.09);
+
+  /* tipografía */
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  --math: "Cambria", "Georgia", "Times New Roman", serif;
+}
+
+[data-theme="dark"] {
+  --bg:          #11151a;
+  --panel:       #171c22;
+  --panel-2:     #1e242b;
+  --panel-3:     #273038;
+  --line:        #2a333b;
+  --line-strong: #3a4650;
+
+  --text:        #e6e9e8;
+  --text-2:      #c3cac9;
+  --muted:       #8b9695;
+
+  --accent:      #4fc0a3;
+  --accent-2:    #6fd3b8;
+  --accent-soft: #14312a;
+  --on-accent:   #06211b;
+  --ok:          #58c98d;
+  --warn:        #d6a45c;
+  --danger:      #ef7c72;
+  --danger-soft: #35201e;
+
+  --grid:        #222a31;
+  --grid-strong: #33404a;
+  --axis:        #8b9695;
+  --canvas-bg:   #141920;
+  --geo-fill:    rgba(79,192,163,.13);
+  --geo-point:   #4fc0a3;
+  --geo-sel:     #e09a5a;
+
+  --c1: #4fc0a3;  --c2: #6aa8ea;  --c3: #e09a5a;
+  --c4: #b98ae0;  --c5: #ef7c72;  --c6: #57c4cf;
+  --c7: #b9c96a;  --c8: #e58ab5;
+
+  --shadow:    0 1px 2px rgba(0,0,0,.4), 0 6px 18px rgba(0,0,0,.28);
+  --shadow-lg: 0 2px 6px rgba(0,0,0,.5), 0 18px 40px rgba(0,0,0,.4);
+}
