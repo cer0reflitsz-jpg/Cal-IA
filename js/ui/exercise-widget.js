@@ -50,7 +50,7 @@
     var selectedChoice = null;
 
     if (question.type === 'numeric' || question.type === 'algebraic') {
-      inputArea.innerHTML = '<input type="text" class="field" id="ex-text-input" placeholder="Tu respuesta" autocomplete="off" spellcheck="false">';
+      inputArea.innerHTML = '<input type="text" class="field" id="ex-text-input" data-math-input placeholder="Tu respuesta" autocomplete="off" spellcheck="false">';
       var textInput = inputArea.querySelector('#ex-text-input');
       textInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); onCheck(); } });
       getAnswer = function () { return textInput.value; };

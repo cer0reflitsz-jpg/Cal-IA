@@ -4,16 +4,7 @@
 (function (MP) {
   'use strict';
 
-  var TOOL_TITLES = {
-    home: 'Inicio',
-    graph: 'Graficador de funciones',
-    geometry: 'Laboratorio de geometría',
-    calculator: 'Calculadora',
-    algebra: 'Álgebra y cálculo',
-    learn: 'Aprende',
-    practice: 'Practica',
-    exams: 'Mini exámenes'
-  };
+  var TOOL_IDS = ['home', 'graph', 'geometry', 'calculator', 'algebra', 'learn', 'practice', 'exams'];
 
   var current = null;
 
@@ -29,7 +20,7 @@
     var btn = document.getElementById('theme-btn');
     if (btn) {
       btn.textContent = theme === 'dark' ? '☀' : '☾';
-      btn.title = theme === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro';
+      btn.title = MP.i18n.t(theme === 'dark' ? 'light' : 'dark');
       btn.setAttribute('aria-label', btn.title);
     }
     // los lienzos leen los colores del CSS: hay que repintarlos
@@ -41,20 +32,47 @@
     if (MP.tools.geometry && MP.tools.geometry.redraw) MP.tools.geometry.redraw();
   }
 
+  var transition = null;
   function switchTool(id) {
-    if (!TOOL_TITLES[id]) return;
-    current = id;
-    Array.prototype.forEach.call(document.querySelectorAll('.tool'), function (t) {
-      t.classList.toggle('active', t.dataset.tool === id);
-    });
-    Array.prototype.forEach.call(document.querySelectorAll('.nav-item'), function (b) {
-      b.setAttribute('aria-current', b.dataset.go === id ? 'true' : 'false');
-    });
-    var title = document.getElementById('tool-title');
-    if (title) title.textContent = TOOL_TITLES[id];
-    store('mp.tool', id);
-    // el lienzo puede haber cambiado de tamaño mientras estaba oculto
-    setTimeout(redrawAll, 0);
+    if (TOOL_IDS.indexOf(id) === -1 || current === id) return;
+    if (transition) transition.skipTransition();
+    if (MP.symbolPicker) MP.symbolPicker.close();
+    var updated = false, nativeTransition = false;
+    function update() {
+      if (updated) return;
+      updated = true;
+      current = id;
+      Array.prototype.forEach.call(document.querySelectorAll('.tool'), function (t) {
+        t.classList.toggle('tool-enter', t.dataset.tool === id && !nativeTransition);
+        t.classList.toggle('active', t.dataset.tool === id);
+      });
+      Array.prototype.forEach.call(document.querySelectorAll('.nav-item'), function (b) {
+        b.setAttribute('aria-current', b.dataset.go === id ? 'true' : 'false');
+      });
+      document.getElementById('tool-title').textContent = MP.i18n.t('tool.' + id);
+      store('mp.tool', id);
+      setTimeout(redrawAll, 0);
+    }
+    var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (document.startViewTransition && !reduced) {
+      try {
+        nativeTransition = true;
+        var next = document.startViewTransition(update);
+        transition = next;
+        // Resizing or rapid navigation can legitimately skip the snapshot.
+        next.ready.catch(function () {});
+        function finish() {
+          if (transition !== next) return;
+          transition = null;
+        }
+        next.finished.then(finish, finish);
+      } catch (e) {
+        nativeTransition = false;
+        transition = null;
+      }
+    }
+    // Navigation never waits for the browser's asynchronous snapshot callback.
+    update();
   }
 
   function toast(msg) {
@@ -75,6 +93,11 @@
      de menú, muestra los mismos grupos (Herramientas, Aprender,
      Evalúa) y se cierra solo al elegir una sección.              */
   var menuOpen = false;
+  function syncSidebarAccess() {
+    var sidebar = document.getElementById('app-sidebar');
+    var mobile = window.matchMedia('(max-width: 900px)').matches;
+    if (sidebar) sidebar.inert = mobile && !menuOpen;
+  }
   function setMenu(open) {
     menuOpen = open;
     var sidebar = document.getElementById('app-sidebar');
@@ -82,7 +105,13 @@
     var btn = document.getElementById('menu-btn');
     if (sidebar) sidebar.classList.toggle('open', open);
     if (backdrop) backdrop.classList.toggle('open', open);
-    if (btn) btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (btn) {
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      btn.setAttribute('aria-label', MP.i18n.t(open ? 'menuClose' : 'menuOpen'));
+      if (!open && sidebar && sidebar.contains(document.activeElement) &&
+          window.matchMedia('(max-width: 900px)').matches) btn.focus();
+    }
+    syncSidebarAccess();
     if (open && MP.account && MP.account.closePanel) MP.account.closePanel();
   }
   function toggleMenu() { setMenu(!menuOpen); }
@@ -91,7 +120,7 @@
   function openGraph(src) {
     switchTool('graph');
     MP.tools.graph.addExpression(src);
-    toast('Añadido al graficador');
+    toast(MP.i18n.t('graphAdded'));
   }
 
   function openAlgebra(src, op) {
@@ -104,10 +133,25 @@
     switchTool('calculator');
     MP.tools.calculator.setInput(src);
     MP.tools.calculator.compute();
-    toast('Abierto en la calculadora');
+    toast(MP.i18n.t('calculatorOpened'));
   }
 
   function init() {
+    MP.i18n.apply();
+    MP.symbolPicker.init();
+    setMenu(false);
+    var mobileLayout = window.matchMedia('(max-width: 900px)');
+    if (mobileLayout.addEventListener) mobileLayout.addEventListener('change', function () {
+      setMenu(false);
+    });
+    document.getElementById('language-select').onchange = function (e) {
+      MP.i18n.setLanguage(e.target.value);
+    };
+    document.addEventListener('mp:languagechange', function () {
+      if (current) document.getElementById('tool-title').textContent = MP.i18n.t('tool.' + current);
+      applyTheme(document.documentElement.getAttribute('data-theme'));
+      setMenu(menuOpen);
+    });
     var saved = load('mp.theme');
     var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
     applyTheme(saved || (prefersDark ? 'dark' : 'light'));
@@ -138,7 +182,8 @@
     MP.tools.exams.init();
     MP.account.init();
 
-    switchTool(load('mp.tool') || 'home');
+    var savedTool = load('mp.tool');
+    switchTool(TOOL_IDS.indexOf(savedTool) !== -1 ? savedTool : 'home');
 
     // Redibuja cuando cambian los tamaños de los contenedores.
     if (window.ResizeObserver) {

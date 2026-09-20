@@ -16,13 +16,13 @@ const src = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
 let out = src;
 
 // <link rel="stylesheet" href="styles/x.css">  →  <style> … </style>
-out = out.replace(/[ \t]*<link rel="stylesheet" href="([^"]+)">\n/g, (m, href) => {
+out = out.replace(/[ \t]*<link rel="stylesheet" href="(styles\/[^"]+)">\r?\n/g, (m, href) => {
   const css = fs.readFileSync(path.join(ROOT, href), 'utf8');
   return `<style>\n/* ===== ${href} ===== */\n${css}</style>\n`;
 });
 
 // <script src="js/x.js"></script>  →  <script> … </script>
-out = out.replace(/[ \t]*<script src="([^"]+)"><\/script>\n/g, (m, srcPath) => {
+out = out.replace(/[ \t]*<script src="(js\/[^"]+)"><\/script>\r?\n/g, (m, srcPath) => {
   const js = fs.readFileSync(path.join(ROOT, srcPath), 'utf8');
   return `<script>\n/* ===== ${srcPath} ===== */\n${js}</script>\n`;
 });
@@ -35,8 +35,8 @@ fs.writeFileSync(outPath, out, 'utf8');
 const kb = (Buffer.byteLength(out, 'utf8') / 1024).toFixed(1);
 console.log('');
 console.log('  dist/index.html generado  (' + kb + ' KB, un solo archivo)');
-if (/<link rel="stylesheet"|<script src=/.test(out)) {
-  console.log('  AVISO: han quedado referencias externas sin incrustar');
+if (/<link rel="stylesheet" href="styles\/|<script src="js\//.test(out)) {
+  console.log('  AVISO: han quedado referencias locales sin incrustar');
   process.exit(1);
 }
 console.log('');

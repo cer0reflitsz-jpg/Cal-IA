@@ -42,6 +42,8 @@ class El {
       has: (t, k) => ('data-' + camelToDash(String(k))) in self.attrs
     });
   }
+  get className() { return this.attrs.class || ''; }
+  set className(value) { this.setAttribute('class', value); }
   _classes() { return new Set((this.attrs.class || '').split(/\s+/).filter(Boolean)); }
   setAttribute(k, v) { this.attrs[k] = String(v); if (k === 'id') registry[v] = this; }
   getAttribute(k) { return this.attrs[k]; }
@@ -63,7 +65,23 @@ class El {
     if (typeof on === 'function') on.call(this, ev);
   }
   click() { this.dispatch('click', {}); }
-  focus() {}
+  focus() { doc.activeElement = this; doc.dispatchEvent({ type: 'focusin', target: this }); }
+  hasAttribute(key) { return key in this.attrs; }
+  contains(node) { return node === this || this.children.some(c => c.contains(node)); }
+  get isConnected() { return tree.contains(this); }
+  getClientRects() {
+    for (let node = this; node; node = node.parentNode) {
+      if (node.hidden || (node.classList.contains('tool') && !node.classList.contains('active'))) return [];
+    }
+    return [this.getBoundingClientRect()];
+  }
+  setSelectionRange(start, end) { this.selectionStart = start; this.selectionEnd = end; }
+  setRangeText(text, start, end) {
+    this.value = this.value.slice(0, start) + text + this.value.slice(end);
+    this.setSelectionRange(start + text.length, start + text.length);
+  }
+  removeEventListener(type, fn) { this._listeners[type] = (this._listeners[type] || []).filter(f => f !== fn); }
+  dispatchEvent(event) { this.dispatch(event.type, { target: this }); }
   setPointerCapture() {}
   getBoundingClientRect() { return { left: 0, top: 0, width: 900, height: 600 }; }
   get clientWidth() { return 900; }
@@ -103,6 +121,8 @@ class El {
 function camelToDash(s) { return s.replace(/[A-Z]/g, m => '-' + m.toLowerCase()); }
 
 function matches(el, sel) {
+  const compound = /^([a-z]+)(\[.*\])$/.exec(sel);
+  if (compound) return matches(el, compound[1]) && matches(el, compound[2]);
   if (sel.startsWith('#')) return el.attrs.id === sel.slice(1);
   if (sel.startsWith('.')) return el._classes().has(sel.slice(1));
   if (sel.startsWith('[')) {
@@ -145,6 +165,7 @@ function parseHTML(src) {
       el.setAttribute(a[1], v);
     }
     if (el.attrs.checked !== undefined) el.checked = true;
+    if (el.attrs.hidden !== undefined) el.hidden = true;
     stack[stack.length - 1].appendChild(el);
     if (!VOID[tag] && !m[4]) stack.push(el);
   }
@@ -168,10 +189,14 @@ const doc = {
   },
   querySelectorAll: sel => tree.querySelectorAll(sel),
   querySelector: sel => tree.querySelector(sel),
-  addEventListener: () => {}
+  _listeners: {},
+  addEventListener(type, fn) { (this._listeners[type] = this._listeners[type] || []).push(fn); },
+  dispatchEvent(event) { (this._listeners[event.type] || []).forEach(fn => fn(event)); }
 };
 
 const store = {};
+Object.defineProperty(global, 'navigator', { value: { language: 'es-CO' }, configurable: true });
+global.CustomEvent = class { constructor(type, options) { this.type = type; this.detail = options.detail; } };
 global.window = global;
 global.document = doc;
 global.localStorage = {
@@ -179,7 +204,15 @@ global.localStorage = {
   setItem: (k, v) => { store[k] = String(v); },
   removeItem: k => { delete store[k]; }
 };
-global.matchMedia = () => ({ matches: false });
+const mediaQueries = new Map();
+global.matchMedia = query => {
+  if (!mediaQueries.has(query)) mediaQueries.set(query, {
+    matches: false, listeners: [],
+    addEventListener(type, fn) { if (type === 'change') this.listeners.push(fn); },
+    change(matches) { this.matches = matches; this.listeners.forEach(fn => fn(this)); }
+  });
+  return mediaQueries.get(query);
+};
 global.addEventListener = () => {};
 global.removeEventListener = () => {};
 global.confirm = () => true;
@@ -211,7 +244,7 @@ const FILES = [
   'js/geometry/model.js', 'js/geometry/canvas.js',
   'js/engine/exercise-engine.js',
   'js/content/profiles.js', 'js/content/topics.js', 'js/content/exercises.js',
-  'js/ui/home.js', 'js/ui/graph.js', 'js/ui/geometry.js', 'js/ui/calculator.js',
+  'js/ui/i18n.js', 'js/ui/symbol-picker.js', 'js/ui/home.js', 'js/ui/graph.js', 'js/ui/geometry.js', 'js/ui/calculator.js',
   'js/ui/algebra.js', 'js/ui/learn.js', 'js/ui/exercise-widget.js',
   'js/ui/practice.js', 'js/ui/exams.js', 'js/ui/account.js', 'js/ui/app.js'
 ];
@@ -583,6 +616,248 @@ test('el cajón de secciones se abre y se cierra en la vista móvil', () => {
   assert(sidebar._classes().has('open'));
   doc.querySelectorAll('.nav-item')[0].click();
   assert(!sidebar._classes().has('open'), 'elegir una sección debería cerrar el cajón');
+});
+
+
+test('language preference: browser defaults, persisted override and unavailable storage', () => {
+  const vm = require('vm');
+  const source = fs.readFileSync(path.join(ROOT, 'js/ui/i18n.js'), 'utf8');
+  function boot(browserLanguage, saved, blocked) {
+    const context = { window: { navigator: { language: browserLanguage } },
+      localStorage: { getItem() { if (blocked) throw Error('blocked'); return saved; } } };
+    vm.runInNewContext(source, context);
+    return context.window.MP.i18n.getLanguage();
+  }
+  assert(boot('en-US', null) === 'en');
+  assert(boot('fr-FR', null) === 'es');
+  assert(boot('en-GB', 'es') === 'es');
+  assert(boot('es-CO', 'en') === 'en');
+  assert(boot('en-US', 'invalid') === 'en');
+  assert(boot('en-US', null, true) === 'en');
+});
+
+test('popup follows saved language on startup and changes made in another tab', () => {
+  const vm = require('vm');
+  const nodes = ['symbolHintTitle', 'symbolHint', 'symbolHintDismiss'].map(key => {
+    const node = new El('span'); node.setAttribute('data-i18n', key); return node;
+  });
+  const root = new El('html'), select = new El('select');
+  const listeners = {};
+  let saved = 'es', writes = 0, events = 0;
+  const storage = { getItem: () => saved, setItem() { writes++; } };
+  const window = { navigator: { language: 'en-US' },
+    addEventListener(type, fn) { listeners[type] = fn; } };
+  const document = { documentElement: root, querySelector: () => null,
+    querySelectorAll: selector => selector === '[data-i18n]' ? nodes : [],
+    getElementById: () => select, dispatchEvent() { events++; } };
+  vm.runInNewContext(fs.readFileSync(path.join(ROOT, 'js/ui/i18n.js'), 'utf8'),
+    { window, document, localStorage: storage, CustomEvent: global.CustomEvent });
+  window.MP.i18n.apply();
+  assert(nodes[1].textContent.startsWith('Inserta símbolos') && nodes[2].textContent === 'Entendido');
+  function externalChange(value) {
+    saved = value;
+    if (listeners.storage) listeners.storage({ key: 'mp.lang', newValue: value, storageArea: storage });
+  }
+  externalChange('en');
+  assert(nodes[1].textContent.startsWith('Insert symbols') && nodes[2].textContent === 'Got it');
+  externalChange('es');
+  assert(nodes[1].textContent.startsWith('Inserta símbolos') && nodes[2].textContent === 'Entendido');
+  assert(select.value === 'es' && root.getAttribute('lang') === 'es');
+  assert(writes === 0 && events === 2, 'external preference changes must not write back to storage');
+});
+
+test('language selector translates shell, metadata and home; preserves profile and tool content', () => {
+  MP.app.switchTool('home');
+  const profile = doc.getElementById('profile-btn-name').textContent;
+  const calculator = doc.getElementById('calc-output').innerHTML;
+  const select = doc.getElementById('language-select');
+  select.value = 'en'; select.dispatch('change');
+  assert(store['mp.lang'] === 'en');
+  assert(documentEl.getAttribute('lang') === 'en');
+  assert(doc.title === 'MathPath — Mathematics lab');
+  assert(doc.querySelector('meta[name="description"]').getAttribute('content').startsWith('Interactive'));
+  assert(doc.getElementById('tool-title').textContent === 'Home');
+  assert(doc.querySelector('[data-i18n="nav.graph"]').textContent === 'Grapher');
+  assert(doc.getElementById('profile-btn').getAttribute('aria-label') === 'Switch profile');
+  assert(doc.getElementById('profile-btn-name').textContent === profile);
+  assert(doc.getElementById('calc-output').innerHTML === calculator);
+  const home = doc.getElementById('home-content').innerHTML;
+  assert(home.includes('What each section does') && home.includes('Works on desktop'));
+  assert(home.includes('3-4-5 triangle') && !home.includes('Abrir'));
+  doc.querySelector('[data-open-tool="graph"]').click();
+  assert(doc.getElementById('tool-title').textContent === 'Function grapher');
+  MP.i18n.setLanguage('unsupported');
+  assert(MP.i18n.getLanguage() === 'en');
+  MP.i18n.setLanguage('es');
+  assert(documentEl.getAttribute('lang') === 'es' && select.value === 'es');
+  assert(doc.getElementById('home-content').innerHTML.includes('Qué hace cada sección'));
+});
+
+test('first-visit symbol hint is passive, bilingual and explicitly dismissible', () => {
+  const hint = doc.getElementById('symbol-hint'), trigger = doc.getElementById('symbol-btn');
+  assert(!hint.hidden && trigger.getAttribute('aria-describedby') === 'symbol-hint-text');
+  const before = doc.activeElement;
+  MP.i18n.setLanguage('en');
+  assert(doc.getElementById('symbol-hint-text').textContent.includes('First click a math field'));
+  assert(doc.getElementById('symbol-hint-dismiss').textContent === 'Got it');
+  assert(doc.activeElement === before, 'translating the hint must not steal focus');
+  MP.i18n.setLanguage('es');
+  assert(doc.getElementById('symbol-hint-text').textContent.includes('Primero haz clic'));
+  const dismiss = doc.getElementById('symbol-hint-dismiss');
+  dismiss.focus(); dismiss.click();
+  assert(hint.hidden && store['mp.symbolHintDismissed'] === '1');
+  assert(doc.activeElement === trigger && !trigger.hasAttribute('aria-describedby'));
+});
+
+test('hint persists across visits, tracks touch availability and tolerates blocked storage', () => {
+  const vm = require('vm');
+  const source = fs.readFileSync(path.join(ROOT, 'js/ui/symbol-picker.js'), 'utf8');
+  function boot(saved, touch, blocked) {
+    const nodes = {};
+    for (const id of ['symbol-btn', 'symbol-panel', 'symbol-hint', 'symbol-hint-dismiss']) nodes[id] = new El('div');
+    let stored = saved, listener;
+    const document = { activeElement: null, getElementById: id => nodes[id], addEventListener() {} };
+    const media = { matches: touch, addEventListener(type, fn) { listener = fn; } };
+    const window = { MP: {}, matchMedia: () => media };
+    const localStorage = {
+      getItem() { if (blocked) throw Error('blocked'); return stored; },
+      setItem(key, value) { if (blocked) throw Error('blocked'); stored = value; }
+    };
+    vm.runInNewContext(source, { window, document, localStorage });
+    window.MP.symbolPicker.init();
+    return { nodes, document, changeTouch(value) { media.matches = value; listener(); }, stored: () => stored };
+  }
+  const returning = boot('1', false);
+  assert(returning.nodes['symbol-hint'].hidden, 'dismissed hint must stay hidden on a fresh visit');
+  const fresh = boot(null, true);
+  assert(fresh.nodes['symbol-hint'].hidden && fresh.document.activeElement === null);
+  fresh.changeTouch(false);
+  assert(!fresh.nodes['symbol-hint'].hidden && fresh.document.activeElement === null);
+  fresh.changeTouch(true); assert(fresh.nodes['symbol-hint'].hidden);
+  const blocked = boot(null, false, true);
+  blocked.nodes['symbol-hint-dismiss'].click();
+  assert(blocked.nodes['symbol-hint'].hidden, 'dismissal works for this visit without storage');
+});
+
+test('symbol picker replaces a selection, returns focus and emits one input event', () => {
+  MP.app.switchTool('calculator');
+  const field = doc.getElementById('calc-input');
+  const trigger = doc.getElementById('symbol-btn'), panel = doc.getElementById('symbol-panel');
+  field.value = '12+34'; field.setSelectionRange(3, 5); field.focus();
+  let inputs = 0;
+  const listen = () => inputs++;
+  field.addEventListener('input', listen);
+  trigger.focus(); trigger.click();
+  assert(!panel.hidden && trigger.getAttribute('aria-expanded') === 'true');
+  const symbols = panel.querySelectorAll('button');
+  assert(symbols.map(b => b.textContent).join(' ') === '² √ π ∑ ∫ ≤ ≥ ≠ ± ∞ θ Δ');
+  assert(doc.activeElement === symbols[0]);
+  symbols[2].click();
+  assert(field.value === '12+π' && field.selectionStart === 4);
+  assert(inputs === 1 && panel.hidden && doc.activeElement === field);
+  field.removeEventListener('input', listen);
+});
+
+test('symbol picker uses native editing without duplicate input events', () => {
+  const field = doc.getElementById('calc-input');
+  field.value = 'xx'; field.setSelectionRange(0, 2); field.focus();
+  let calls = 0, inputs = 0;
+  const listen = () => inputs++;
+  field.addEventListener('input', listen);
+  doc.execCommand = (command, ui, text) => {
+    assert(command === 'insertText' && text === '√'); calls++;
+    field.setRangeText(text, field.selectionStart, field.selectionEnd);
+    field.dispatchEvent(new Event('input')); return true;
+  };
+  doc.getElementById('symbol-btn').click();
+  doc.getElementById('symbol-panel').querySelectorAll('button')[1].click();
+  assert(calls === 1 && inputs === 1 && field.value === '√');
+  delete doc.execCommand; field.removeEventListener('input', listen);
+});
+
+test('symbol picker ignores profile fields and rejects hidden, disabled or detached targets', () => {
+  const trigger = doc.getElementById('symbol-btn'), panel = doc.getElementById('symbol-panel');
+  const math = doc.getElementById('calc-input');
+  math.value = '1'; math.setSelectionRange(1, 1); math.focus();
+  const profile = doc.createElement('input'); profile.value = 'Name'; profile.focus();
+  trigger.click(); panel.querySelectorAll('button')[0].click();
+  assert(profile.value === 'Name' && math.value === '1²');
+  math.disabled = true; trigger.click(); assert(panel.hidden); math.disabled = false;
+  math.readOnly = true; trigger.click(); assert(panel.hidden); math.readOnly = false;
+  MP.app.switchTool('home'); trigger.click(); assert(panel.hidden);
+  MP.app.switchTool('graph');
+  const graph = doc.querySelector('.expr-input'); graph.setSelectionRange(0, 0); graph.focus();
+  graph.remove(); trigger.click(); assert(panel.hidden);
+});
+
+test('symbol picker closes on Escape, outside pointer activation and keyboard focus departure', () => {
+  MP.app.switchTool('calculator');
+  const field = doc.getElementById('calc-input'), trigger = doc.getElementById('symbol-btn');
+  const panel = doc.getElementById('symbol-panel');
+  field.focus(); trigger.click();
+  doc.dispatchEvent({ type: 'keydown', key: 'Escape', preventDefault() {} });
+  assert(panel.hidden && doc.activeElement === trigger);
+  trigger.click();
+  doc.dispatchEvent({ type: 'pointerdown', target: doc.getElementById('theme-btn') });
+  assert(panel.hidden);
+  trigger.click(); doc.getElementById('language-select').focus(); assert(panel.hidden);
+});
+
+test('drawer restores focus for Escape, backdrop and selection only when hiding focused navigation', () => {
+  const originalMedia = global.matchMedia;
+  global.matchMedia = query => ({ matches: query === '(max-width: 900px)' });
+  const menu = doc.getElementById('menu-btn'), nav = doc.querySelectorAll('.nav-item')[0];
+  for (const close of [() => doc.dispatchEvent({type:'keydown', key:'Escape'}),
+    () => doc.getElementById('sidebar-backdrop').click(), () => nav.click()]) {
+    menu.click(); nav.focus();
+    assert(menu.getAttribute('aria-expanded') === 'true');
+    assert(menu.getAttribute('aria-label') === 'Cerrar menú de secciones');
+    close();
+    assert(doc.activeElement === menu && menu.getAttribute('aria-expanded') === 'false');
+    assert(menu.getAttribute('aria-label') === 'Abrir menú de secciones');
+  }
+  menu.click(); doc.getElementById('language-select').focus(); MP.app.closeMenu();
+  assert(doc.activeElement === doc.getElementById('language-select'));
+  global.matchMedia = originalMedia;
+});
+
+test('mobile drawer becomes inert immediately on close and restores access on desktop resize', () => {
+  const mobile = mediaQueries.get('(max-width: 900px)');
+  const menu = doc.getElementById('menu-btn'), sidebar = doc.getElementById('app-sidebar');
+  const navigation = doc.querySelectorAll('.nav-item')[0];
+  mobile.change(true); assert(sidebar.inert);
+  menu.click(); assert(!sidebar.inert);
+  navigation.focus(); MP.app.closeMenu();
+  assert(sidebar.inert && doc.activeElement === menu);
+  mobile.change(false); assert(!sidebar.inert);
+  navigation.focus(); mobile.change(true);
+  assert(sidebar.inert && doc.activeElement === menu, 'desktop focus cannot stay in the hidden mobile drawer');
+  mobile.change(false); assert(!sidebar.inert);
+});
+
+test('view transitions keep navigation immediate, avoid duplicate animation and respect reduced motion', () => {
+  let callback, finish, skips = 0;
+  doc.startViewTransition = update => {
+    callback = update;
+    return { ready: { catch() {} }, skipTransition() { skips++; }, finished: { then(resolve) { finish = resolve; } } };
+  };
+  MP.app.switchTool('geometry');
+  assert(doc.getElementById('tool-title').textContent === 'Laboratorio de geometría');
+  callback(); finish();
+  assert(!doc.querySelector('[data-tool="geometry"]').classList.contains('tool-enter'));
+  MP.app.switchTool('calculator'); MP.app.switchTool('algebra');
+  assert(skips === 1); callback(); finish();
+  doc.startViewTransition = () => { throw Error('unavailable'); };
+  MP.app.switchTool('home');
+  assert(doc.querySelector('[data-tool="home"]').classList.contains('tool-enter'));
+  const originalMedia = global.matchMedia;
+  global.matchMedia = query => ({ matches: query === '(prefers-reduced-motion: reduce)' });
+  let invoked = false; doc.startViewTransition = () => { invoked = true; };
+  const beforeDraws = drawCalls;
+  MP.app.switchTool('graph');
+  assert(!invoked && drawCalls > beforeDraws);
+  global.matchMedia = originalMedia; delete doc.startViewTransition;
+  MP.app.switchTool('home');
 });
 
 console.log('');
