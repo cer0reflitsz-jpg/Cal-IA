@@ -243,8 +243,13 @@ const FILES = [
   'js/core/calculus.js', 'js/plot/viewport.js', 'js/plot/plotter.js',
   'js/geometry/model.js', 'js/geometry/canvas.js',
   'js/engine/exercise-engine.js',
+<<<<<<< HEAD
   'js/content/profiles.js', 'js/content/topics.js', 'js/content/exercises.js', 'js/content/resources.js',
   'js/ui/i18n.js', 'js/ui/symbol-picker.js', 'js/ui/practice-kit.js', 'js/ui/home.js', 'js/ui/graph.js', 'js/ui/geometry.js', 'js/ui/calculator.js',
+=======
+  'js/content/profiles.js', 'js/content/topics.js', 'js/content/exercises.js',
+  'js/ui/i18n.js', 'js/ui/symbol-picker.js', 'js/ui/home.js', 'js/ui/graph.js', 'js/ui/geometry.js', 'js/ui/calculator.js',
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
   'js/ui/algebra.js', 'js/ui/learn.js', 'js/ui/exercise-widget.js',
   'js/ui/practice.js', 'js/ui/exams.js', 'js/ui/account.js', 'js/ui/app.js'
 ];

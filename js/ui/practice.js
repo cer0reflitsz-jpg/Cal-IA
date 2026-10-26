@@ -22,6 +22,7 @@
   }
 
   var picked = { topics: [], difficulty: 'basico' };
+<<<<<<< HEAD
   var CAT_ICON = ['÷', 'x', 'ƒ', '△', 'θ', '∂', '∫'];
 
   function catIcon(name) {
@@ -47,6 +48,15 @@
     html += '<div class="section-heading">Elige uno o varios temas <span class="count-pill" id="practice-count">' + picked.topics.length + '</span></div>';
     cats.forEach(function (cat) {
       html += '<div class="practice-cat"><span class="cat-ico" aria-hidden="true">' + catIcon(cat.name) + '</span>' + cat.name + '</div><div class="practice-topic-grid">';
+=======
+
+  function renderPicker() {
+    var cats = availableTopicsByCategory();
+    var html = '<div class="inner">';
+    html += '<div class="section-heading">Elige uno o varios temas</div>';
+    cats.forEach(function (cat) {
+      html += '<div class="practice-cat">' + cat.name + '</div><div class="practice-topic-grid">';
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
       cat.items.forEach(function (t) {
         var sel = picked.topics.indexOf(t.id) >= 0;
         html += '<button class="practice-topic-chip' + (sel ? ' sel' : '') + '" data-topic="' + t.id + '">' + R_esc(t.title) + '</button>';
@@ -54,6 +64,7 @@
       html += '</div>';
     });
 
+<<<<<<< HEAD
     html += '<div class="section-heading">Dificultad</div><div class="btn-row seg" id="practice-diff-row">';
     MP.exbank.difficulties.forEach(function (d) {
       var sel = picked.difficulty === d;
@@ -64,6 +75,25 @@
     html += '<div class="btn-row" style="margin-top:22px">' +
       '<button class="btn primary lg start-btn" id="practice-start" ' + (picked.topics.length ? '' : 'disabled') + '>Comenzar práctica <span aria-hidden="true">→</span></button>' +
       '</div>';
+=======
+    html += '<div class="section-heading">Dificultad</div><div class="btn-row" id="practice-diff-row">';
+    MP.exbank.difficulties.forEach(function (d) {
+      var sel = picked.difficulty === d;
+      html += '<button class="btn' + (sel ? ' primary' : '') + '" data-diff="' + d + '">' + MP.exbank.difficultyLabel(d) + '</button>';
+    });
+    html += '</div>';
+
+    html += '<div class="btn-row" style="margin-top:18px">' +
+      '<button class="btn primary" id="practice-start" ' + (picked.topics.length ? '' : 'disabled') + '>Comenzar práctica</button>' +
+      '</div>';
+
+    var stats = MP.profiles.getData().practice;
+    if (stats.attempted > 0) {
+      html += '<div class="section-heading">Tu progreso en este perfil</div>' +
+        '<div class="fact-row"><span class="fmark">' + Math.round(100 * stats.correct / stats.attempted) + '%</span>' +
+        '<span>' + stats.correct + ' de ' + stats.attempted + ' ejercicios correctos en total.</span></div>';
+    }
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
     html += '</div>';
     el.content.innerHTML = html;
     bindPicker();
@@ -71,15 +101,20 @@
 
   function R_esc(s) { return MP.render.esc(s); }
 
+<<<<<<< HEAD
   // Los cambios de selección se aplican en el sitio: nada se vuelve a pintar ni a animar.
   function bindPicker() {
     var startBtn = document.getElementById('practice-start');
     var counter = document.getElementById('practice-count');
+=======
+  function bindPicker() {
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
     Array.prototype.forEach.call(el.content.querySelectorAll('[data-topic]'), function (b) {
       b.onclick = function () {
         var id = b.getAttribute('data-topic');
         var i = picked.topics.indexOf(id);
         if (i >= 0) picked.topics.splice(i, 1); else picked.topics.push(id);
+<<<<<<< HEAD
         b.classList.toggle('sel', i < 0);
         if (counter) {
           counter.textContent = picked.topics.length;
@@ -95,6 +130,15 @@
         Array.prototype.forEach.call(diffBtns, function (x) { x.classList.toggle('primary', x === b); });
       };
     });
+=======
+        renderPicker();
+      };
+    });
+    Array.prototype.forEach.call(el.content.querySelectorAll('[data-diff]'), function (b) {
+      b.onclick = function () { picked.difficulty = b.getAttribute('data-diff'); renderPicker(); };
+    });
+    var startBtn = document.getElementById('practice-start');
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
     if (startBtn) startBtn.onclick = function () { startSession(picked.topics.slice(), picked.difficulty, 8); };
   }
 
@@ -111,6 +155,7 @@
   function startSession(topicIds, difficulty, count) {
     topicIds = topicIds.filter(function (id) { return MP.exbank.has(id); });
     if (!topicIds.length) return;
+<<<<<<< HEAD
     session = { topics: topicIds, difficulty: difficulty, index: 0, correct: 0, wrong: 0, total: count,
       results: [], streak: 0, best: 0, byTopic: {} };
     nextExercise();
@@ -128,10 +173,17 @@
     if (right) right.innerHTML = hudRight();
   }
 
+=======
+    session = { topics: topicIds, difficulty: difficulty, index: 0, correct: 0, wrong: 0, total: count };
+    nextExercise();
+  }
+
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
   function nextExercise() {
     if (session.index >= session.total) { renderSummary(); return; }
     var topicId = session.topics[session.index % session.topics.length];
     var q = MP.exbank.generate(topicId, session.difficulty);
+<<<<<<< HEAD
     var prev = Math.round(100 * Math.max(0, session.index - 1) / session.total);
     var now = Math.round(100 * session.index / session.total);
 
@@ -148,10 +200,23 @@
     setTimeout(function () { if (fill && fill.style) fill.style.width = now + '%'; }, 40);
 
     var answered = session.index;
+=======
+
+    el.content.innerHTML =
+      '<div class="inner">' +
+      '<div class="practice-progress">' +
+      '<span class="muted small">Ejercicio ' + (session.index + 1) + ' de ' + session.total + '</span>' +
+      '<div class="progress-track"><div class="progress-fill" style="width:' + Math.round(100 * session.index / session.total) + '%"></div></div>' +
+      '</div>' +
+      '<div class="card example-card" id="practice-card"></div>' +
+      '</div>';
+
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
     MP.widgets.renderExercise(document.getElementById('practice-card'), q, {
       showTopic: session.topics.length > 1,
       topicLabel: topicLabel(topicId),
       onResult: function (res) {
+<<<<<<< HEAD
         if (res.correct) { session.correct++; session.streak++; session.best = Math.max(session.best, session.streak); }
         else { session.wrong++; session.streak = 0; }
         session.results[answered] = !!res.correct;
@@ -159,6 +224,10 @@
         bt.t++; if (res.correct) bt.c++;
         MP.profiles.recordPractice(topicId, res.correct);
         paintHud(answered, res.correct);
+=======
+        if (res.correct) session.correct++; else session.wrong++;
+        MP.profiles.recordPractice(topicId, res.correct);
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
       },
       onNext: function () { session.index++; nextExercise(); },
       nextLabel: (session.index + 1 >= session.total) ? 'Ver resumen' : 'Siguiente ejercicio'
@@ -167,6 +236,7 @@
 
   function renderSummary() {
     var pct = session.total ? Math.round(100 * session.correct / session.total) : 0;
+<<<<<<< HEAD
     var g = MP.kit.grade(pct);
     var rows = Object.keys(session.byTopic).map(function (id) {
       return { id: id, label: topicLabel(id), correct: session.byTopic[id].c, total: session.byTopic[id].t };
@@ -192,6 +262,20 @@
     el.content.innerHTML = html;
     MP.kit.countUp(el.content);
     if (pct >= 80) MP.kit.confetti(el.content.querySelector('.ring'), 60);
+=======
+    el.content.innerHTML =
+      '<div class="inner">' +
+      '<div class="section-heading">Resumen de la práctica</div>' +
+      '<div class="result-summary">' +
+      '<div class="result-score">' + session.correct + ' / ' + session.total + '</div>' +
+      '<div class="progress-track"><div class="progress-fill" style="width:' + pct + '%"></div></div>' +
+      '<div class="muted small" style="margin-top:6px">' + pct + '% correcto</div>' +
+      '</div>' +
+      '<div class="btn-row" style="margin-top:16px">' +
+      '<button class="btn primary" id="practice-again">Practicar de nuevo</button>' +
+      '<button class="btn" id="practice-back">Elegir otro tema</button>' +
+      '</div></div>';
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
     document.getElementById('practice-again').onclick = function () {
       startSession(session.topics, session.difficulty, session.total);
     };

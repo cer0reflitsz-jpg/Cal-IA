@@ -16,6 +16,7 @@
   --text-2:      #3d4649;
   --muted:       #6d7679;
 
+<<<<<<< HEAD
   /* tono dinámico: cinema.js lo anima; todo el acento deriva de él */
   --hue:         165;
 
@@ -28,6 +29,12 @@
   --accent:      hsl(var(--hue) 82% 27%);
   --accent-2:    hsl(var(--hue) 84% 21%);
   --accent-soft: hsl(var(--hue) 40% 92%);
+=======
+  /* acento e intención */
+  --accent:      #0e7c66;
+  --accent-2:    #0b6353;
+  --accent-soft: #e0f0eb;
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
   --on-accent:   #ffffff;
   --ok:          #1b7a4b;
   --warn:        #8a5a1a;
@@ -73,9 +80,15 @@
   --text-2:      #c3cac9;
   --muted:       #8b9695;
 
+<<<<<<< HEAD
   --accent:      hsl(var(--hue) 52% 58%);
   --accent-2:    hsl(var(--hue) 60% 69%);
   --accent-soft: hsl(var(--hue) 38% 14%);
+=======
+  --accent:      #4fc0a3;
+  --accent-2:    #6fd3b8;
+  --accent-soft: #14312a;
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
   --on-accent:   #06211b;
   --ok:          #58c98d;
   --warn:        #d6a45c;

@@ -47,6 +47,7 @@
     });
 
     var html = '<div class="inner">';
+<<<<<<< HEAD
     html += '<div class="mode-hero exam-hero"><span class="orb o1" aria-hidden="true">🎓</span><span class="orb o2" aria-hidden="true">∫</span><span class="orb o3" aria-hidden="true">Δ</span>' +
       '<div class="kicker">Mini exámenes</div><h2>Arma tu propio examen</h2>' +
       '<p>Elige nivel, temas y dificultad. Cada pregunta se genera en el momento y al final ves la revisión con enlaces para repasar.</p></div>';
@@ -54,6 +55,11 @@
     html += '<div class="section-heading">Nivel</div><div class="btn-row seg level-row">';
     Object.keys(LEVEL_LABEL).forEach(function (lv) {
       html += '<button class="btn seg-btn' + (cfg.level === lv ? ' primary' : '') + '" data-level="' + lv + '">' + LEVEL_LABEL[lv] + '</button>';
+=======
+    html += '<div class="section-heading">Nivel</div><div class="btn-row">';
+    Object.keys(LEVEL_LABEL).forEach(function (lv) {
+      html += '<button class="btn' + (cfg.level === lv ? ' primary' : '') + '" data-level="' + lv + '">' + LEVEL_LABEL[lv] + '</button>';
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
     });
     html += '</div>';
 
@@ -67,6 +73,7 @@
       html += '</div>';
     });
 
+<<<<<<< HEAD
     html += '<div class="section-heading">Cantidad de preguntas</div><div class="btn-row seg" id="exam-count-row">';
     [5, 10, 15, 20].forEach(function (n) {
       html += '<button class="btn seg-btn' + (cfg.count === n ? ' primary' : '') + '" data-count="' + n + '">' + n + '</button>';
@@ -76,6 +83,17 @@
     html += '<div class="section-heading">Dificultad</div><div class="btn-row seg" id="exam-diff-row">';
     Object.keys(DIFF_LABEL).forEach(function (d) {
       html += '<button class="btn seg-btn' + (cfg.difficulty === d ? ' primary' : '') + '" data-d="' + d + '" data-ediff="' + d + '">' + DIFF_LABEL[d] + '</button>';
+=======
+    html += '<div class="section-heading">Cantidad de preguntas</div><div class="btn-row">';
+    [5, 10, 15, 20].forEach(function (n) {
+      html += '<button class="btn' + (cfg.count === n ? ' primary' : '') + '" data-count="' + n + '">' + n + '</button>';
+    });
+    html += '</div>';
+
+    html += '<div class="section-heading">Dificultad</div><div class="btn-row">';
+    Object.keys(DIFF_LABEL).forEach(function (d) {
+      html += '<button class="btn' + (cfg.difficulty === d ? ' primary' : '') + '" data-ediff="' + d + '">' + DIFF_LABEL[d] + '</button>';
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
     });
     html += '</div>';
 
@@ -83,6 +101,7 @@
       '<span>Usar temporizador</span><label class="switch"><input type="checkbox" id="exam-timer-toggle" ' + (cfg.timer ? 'checked' : '') + '>' +
       '<span class="track"></span><span class="thumb"></span></label></div>';
 
+<<<<<<< HEAD
     html += '<div class="exam-summary" id="exam-summary"></div>';
     html += '<div class="btn-row" style="margin-top:14px">' +
       '<button class="btn primary lg start-btn" id="exam-create" ' + (cfg.topics.length ? '' : 'disabled') + '>Crear mini examen <span aria-hidden="true">→</span></button></div>';
@@ -97,10 +116,23 @@
           '<div class="bd-bar"><i class="' + (pct >= 70 ? 'hi' : pct >= 50 ? 'mid' : 'lo') + '" style="width:' + pct + '%"></i></div></div>';
       });
       html += '</div>';
+=======
+    html += '<div class="btn-row" style="margin-top:18px">' +
+      '<button class="btn primary" id="exam-create" ' + (cfg.topics.length ? '' : 'disabled') + '>Crear mini examen</button></div>';
+
+    var hist = MP.profiles.getData().exams;
+    if (hist.length) {
+      html += '<div class="section-heading">Exámenes anteriores en este perfil</div>';
+      hist.slice(0, 5).forEach(function (h) {
+        html += '<div class="obj-item"><div class="obj-head"><span class="obj-name" style="font-style:normal">' +
+          h.score + '/' + h.total + '</span><span class="obj-kind">' + new Date(h.date).toLocaleDateString() + ' · ' + h.topicsLabel + '</span></div></div>';
+      });
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
     }
     html += '</div>';
     el.content.innerHTML = html;
     bindConfig();
+<<<<<<< HEAD
     paintSummary();
   }
 
@@ -114,6 +146,8 @@
       '<span class="chip">' + DIFF_LABEL[cfg.difficulty] + '</span>' +
       '<span class="chip">≈ ' + mins + ' min</span>' + (cfg.timer ? '<span class="chip">⏱ con temporizador</span>' : '');
     MP.kit.bump(box);
+=======
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
   }
 
   function bindConfig() {
@@ -127,6 +161,7 @@
         if (!c.checked && i >= 0) cfg.topics.splice(i, 1);
         var btn = document.getElementById('exam-create');
         if (btn) btn.disabled = cfg.topics.length === 0;
+<<<<<<< HEAD
         paintSummary();
       };
     });
@@ -148,6 +183,18 @@
     });
     var timerToggle = document.getElementById('exam-timer-toggle');
     if (timerToggle) timerToggle.onchange = function () { cfg.timer = timerToggle.checked; paintSummary(); };
+=======
+      };
+    });
+    Array.prototype.forEach.call(el.content.querySelectorAll('[data-count]'), function (b) {
+      b.onclick = function () { cfg.count = parseInt(b.getAttribute('data-count'), 10); renderConfig(); };
+    });
+    Array.prototype.forEach.call(el.content.querySelectorAll('[data-ediff]'), function (b) {
+      b.onclick = function () { cfg.difficulty = b.getAttribute('data-ediff'); renderConfig(); };
+    });
+    var timerToggle = document.getElementById('exam-timer-toggle');
+    if (timerToggle) timerToggle.onchange = function () { cfg.timer = timerToggle.checked; };
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
     var createBtn = document.getElementById('exam-create');
     if (createBtn) createBtn.onclick = startExam;
   }
@@ -190,6 +237,7 @@
     return (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
   }
 
+<<<<<<< HEAD
   function answeredResults() {
     return exam.answers.map(function (a) { return a ? !!a.correct : undefined; });
   }
@@ -220,6 +268,24 @@
         var dot = el.content.querySelectorAll('.stepper .dot')[answered];
         if (dot) dot.className = 'dot ' + (res.correct ? 'ok' : 'bad');
       },
+=======
+  function renderQuestion() {
+    var q = exam.questions[exam.index];
+    var meta = topicMeta(q.topicId);
+    el.content.innerHTML =
+      '<div class="inner">' +
+      '<div class="practice-progress">' +
+      '<span class="muted small">Pregunta ' + (exam.index + 1) + ' de ' + exam.questions.length + '</span>' +
+      (cfg.timer ? '<span class="muted small mono" id="exam-timer-display" style="margin-left:10px">⏱ 00:00</span>' : '') +
+      '<div class="progress-track"><div class="progress-fill" style="width:' + Math.round(100 * exam.index / exam.questions.length) + '%"></div></div>' +
+      '</div>' +
+      '<div class="card example-card" id="exam-card"></div>' +
+      '</div>';
+
+    MP.widgets.renderExercise(document.getElementById('exam-card'), q, {
+      showTopic: true, topicLabel: meta.title,
+      onResult: function (res) { exam.answers[exam.index] = res; },
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
       onNext: function () {
         exam.index++;
         if (exam.index >= exam.questions.length) finishExam(); else renderQuestion();
@@ -233,12 +299,18 @@
     var correct = exam.answers.filter(function (a) { return a && a.correct; }).length;
     var total = exam.questions.length;
     var elapsed = Math.floor((Date.now() - exam.startTime) / 1000);
+<<<<<<< HEAD
     var missedTopics = [], byTopic = {};
     exam.answers.forEach(function (a, i) {
       var id = exam.questions[i].topicId;
       var bt = byTopic[id] = byTopic[id] || { c: 0, t: 0 };
       bt.t++; if (a && a.correct) bt.c++;
       if (a && !a.correct && missedTopics.indexOf(id) < 0) missedTopics.push(id);
+=======
+    var missedTopics = [];
+    exam.answers.forEach(function (a, i) {
+      if (a && !a.correct && missedTopics.indexOf(exam.questions[i].topicId) < 0) missedTopics.push(exam.questions[i].topicId);
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
     });
 
     MP.profiles.recordExam({
@@ -248,6 +320,7 @@
     });
 
     var pct = total ? Math.round(100 * correct / total) : 0;
+<<<<<<< HEAD
     var g = MP.kit.grade(pct);
     var rows = Object.keys(byTopic).map(function (id) {
       return { label: topicMeta(id).title, correct: byTopic[id].c, total: byTopic[id].t };
@@ -270,10 +343,23 @@
       html += '<div class="section-heading">Para repasar</div>';
       missedTopics.slice(0, 4).forEach(function (id) { html += MP.kit.resourcesHTML(id, 'Repasa: ' + topicMeta(id).title); });
     }
+=======
+    var html = '<div class="inner">';
+    html += '<div class="exam-result-head">🎓 Mini examen terminado</div>';
+    html += '<div class="result-summary"><div class="result-score">' + correct + ' / ' + total + '</div>' +
+      '<div class="progress-track"><div class="progress-fill" style="width:' + pct + '%"></div></div>' +
+      '<div class="muted small" style="margin-top:6px">' + pct + '% correcto' +
+      (cfg.timer ? ' · tiempo ' + fmtTime(elapsed) : '') + '</div></div>';
+
+    html += '<div class="btn-row" style="margin:14px 0">' +
+      '<span class="chip accent">✓ ' + correct + ' correctas</span>' +
+      '<span class="chip">✗ ' + (total - correct) + ' incorrectas</span></div>';
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
 
     html += '<div class="section-heading">Revisión</div><div id="exam-review"></div>';
 
     html += '<div class="btn-row" style="margin-top:16px">' +
+<<<<<<< HEAD
       '<button class="btn primary lg" id="exam-repeat">Repetir examen</button>';
     if (missedTopics.length) html += '<button class="btn lg" id="exam-practice-errors">Practicar mis errores</button>';
     html += '<button class="btn ghost lg" id="exam-home">Volver a configurar</button></div>';
@@ -282,25 +368,47 @@
     el.content.innerHTML = html;
     MP.kit.countUp(el.content);
     if (pct >= 80) MP.kit.confetti(el.content.querySelector('.ring'), 60);
+=======
+      '<button class="btn primary" id="exam-repeat">Repetir examen</button>';
+    if (missedTopics.length) html += '<button class="btn" id="exam-practice-errors">Practicar mis errores</button>';
+    html += '<button class="btn ghost" id="exam-home">Volver a configurar</button></div>';
+    html += '</div>';
+
+    el.content.innerHTML = html;
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
 
     var reviewBox = document.getElementById('exam-review');
     exam.questions.forEach(function (q, i) {
       var a = exam.answers[i] || { correct: false, gaveUp: true };
       var row = document.createElement('div');
+<<<<<<< HEAD
       row.className = 'exam-review-item ' + (a.correct ? 'is-ok' : 'is-bad');
       row.style.setProperty && row.style.setProperty('--si', i);
       row.innerHTML = '<button class="exam-review-head">' +
         '<span class="' + (a.correct ? 'ok' : 'bad') + '">' + (a.correct ? '✓' : '✗') + '</span>' +
         '<span class="exam-review-prompt">' + q.prompt + '</span><span class="chev" aria-hidden="true">▾</span></button>' +
+=======
+      row.className = 'exam-review-item';
+      row.innerHTML = '<button class="exam-review-head">' +
+        '<span class="' + (a.correct ? 'ok' : 'bad') + '">' + (a.correct ? '✓' : '✗') + '</span>' +
+        '<span class="exam-review-prompt">' + q.prompt + '</span></button>' +
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
         '<div class="exam-review-body" hidden>' +
         '<div class="result-line"><span class="tag">Respuesta correcta</span><span class="val">' + R.esc(q.answerText) + '</span></div>' +
         (q.steps && q.steps.length ? '<div class="steps">' + q.steps.map(function (s) {
           return '<div class="step"><div><div class="why">' + s.why + '</div><div class="what">' + s.html + '</div></div></div>';
+<<<<<<< HEAD
         }).join('') + '</div>' : '') +
         MP.kit.resourcesHTML(q.topicId, 'Más sobre ' + topicMeta(q.topicId).title, true) + '</div>';
       var head = row.querySelector('.exam-review-head');
       var body = row.querySelector('.exam-review-body');
       head.onclick = function () { body.hidden = !body.hidden; row.classList.toggle('open', !body.hidden); };
+=======
+        }).join('') + '</div>' : '') + '</div>';
+      var head = row.querySelector('.exam-review-head');
+      var body = row.querySelector('.exam-review-body');
+      head.onclick = function () { body.hidden = !body.hidden; };
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
       reviewBox.appendChild(row);
     });
 

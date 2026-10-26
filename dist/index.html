@@ -26,6 +26,7 @@
   --text-2:      #3d4649;
   --muted:       #6d7679;
 
+<<<<<<< HEAD
   /* tono dinámico: cinema.js lo anima; todo el acento deriva de él */
   --hue:         165;
 
@@ -38,6 +39,12 @@
   --accent:      hsl(var(--hue) 82% 27%);
   --accent-2:    hsl(var(--hue) 84% 21%);
   --accent-soft: hsl(var(--hue) 40% 92%);
+=======
+  /* acento e intención */
+  --accent:      #0e7c66;
+  --accent-2:    #0b6353;
+  --accent-soft: #e0f0eb;
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
   --on-accent:   #ffffff;
   --ok:          #1b7a4b;
   --warn:        #8a5a1a;
@@ -83,9 +90,15 @@
   --text-2:      #c3cac9;
   --muted:       #8b9695;
 
+<<<<<<< HEAD
   --accent:      hsl(var(--hue) 52% 58%);
   --accent-2:    hsl(var(--hue) 60% 69%);
   --accent-soft: hsl(var(--hue) 38% 14%);
+=======
+  --accent:      #4fc0a3;
+  --accent-2:    #6fd3b8;
+  --accent-soft: #14312a;
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
   --on-accent:   #06211b;
   --ok:          #58c98d;
   --warn:        #d6a45c;
@@ -1156,6 +1169,7 @@ input[type="range"]::-moz-range-thumb {
   .exam-topic-list { columns: 1; }
 }
 </style>
+<<<<<<< HEAD
 <style>
 /* ===== styles/cinema.css ===== */
 /* ── Cine: carga, color dinámico y portada ────────────────────
@@ -2061,6 +2075,8 @@ html.no-fx .workspace::before { display: none; }
 }
 html.no-fx .confetti-burst { display: none; }
 </style>
+=======
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
 
@@ -2071,14 +2087,18 @@ html.no-fx .confetti-burst { display: none; }
     if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     document.documentElement.setAttribute('data-theme', t);
   } catch (e) {}
+<<<<<<< HEAD
   // La pantalla de carga mantiene la portada en pausa; si algo falla, se libera sola.
   try { if (localStorage.getItem('mp.fx') === 'off') document.documentElement.classList.add('no-fx'); } catch (e) {}
   document.documentElement.classList.add('is-loading');
   setTimeout(function () { document.documentElement.classList.remove('is-loading'); }, 7000);
+=======
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
 </script>
 </head>
 <body>
 
+<<<<<<< HEAD
 <!-- ── Pantalla de carga ──────────────────────────────────── -->
 <div class="loader" id="loader" aria-hidden="true">
   <div class="loader-half l"></div>
@@ -2092,6 +2112,8 @@ html.no-fx .confetti-burst { display: none; }
   <div class="loader-count" id="loader-count">000</div>
 </div>
 
+=======
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
 <div class="app">
 
   <!-- ── Barra superior ─────────────────────────────────── -->
@@ -2137,7 +2159,10 @@ html.no-fx .confetti-burst { display: none; }
       </button>
       <div class="profile-panel" id="profile-panel" hidden></div>
     </div>
+<<<<<<< HEAD
     <button class="btn icon" id="fx-btn" aria-pressed="true" data-i18n-title="fxOn" data-i18n-aria-label="fxOn" title="Efectos" aria-label="Efectos">✦</button>
+=======
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
     <button class="btn icon" id="theme-btn" title="Cambiar tema" aria-label="Cambiar tema">☾</button>
   </header>
 
@@ -6095,6 +6120,7 @@ html.no-fx .confetti-burst { display: none; }
   };
 })(window.MP = window.MP || {});
 </script>
+<<<<<<< HEAD
 <script>
 /* ===== js/content/resources.js ===== */
 /* ── Recursos externos por tema ───────────────────────────────
@@ -6147,6 +6173,8 @@ html.no-fx .confetti-burst { display: none; }
   MP.resources = { links: links, has: function (id) { return !!QUERY[id]; } };
 })(window.MP = window.MP || {});
 </script>
+=======
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
 
 <!-- ── Interfaz ────────────────────────────────────────── -->
 <script>
@@ -6172,8 +6200,11 @@ html.no-fx .confetti-burst { display: none; }
     "sections": "Secciones",
     "menuOpen": "Abrir menú de secciones",
     "menuClose": "Cerrar menú de secciones",
+<<<<<<< HEAD
     "fxOn": "Efectos activados (pulsa para desactivar)",
     "fxOff": "Efectos desactivados (pulsa para activar)",
+=======
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
     "light": "Cambiar a modo claro",
     "dark": "Cambiar a modo oscuro",
     "profile": "Cambiar de perfil",
@@ -6233,8 +6264,11 @@ html.no-fx .confetti-burst { display: none; }
     "sections": "Sections",
     "menuOpen": "Open section menu",
     "menuClose": "Close section menu",
+<<<<<<< HEAD
     "fxOn": "Effects on (click to turn off)",
     "fxOff": "Effects off (click to turn on)",
+=======
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
     "light": "Switch to light mode",
     "dark": "Switch to dark mode",
     "profile": "Switch profile",
@@ -6415,6 +6449,7 @@ html.no-fx .confetti-burst { display: none; }
 })(window.MP = window.MP || {});
 </script>
 <script>
+<<<<<<< HEAD
 /* ===== js/ui/cinema.js ===== */
 /* ── Cine ─────────────────────────────────────────────────────
    Pantalla de carga, tono de color dinámico (--hue) y escenas
@@ -6876,6 +6911,8 @@ html.no-fx .confetti-burst { display: none; }
 })(window.MP = window.MP || {});
 </script>
 <script>
+=======
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
 /* ===== js/ui/home.js ===== */
 /* ── Herramienta: Inicio ──────────────────────────────────────
    Contenido en su mayoría fijo. Sólo conecta los botones "abrir"
@@ -6921,6 +6958,7 @@ html.no-fx .confetti-burst { display: none; }
     'home.fact.4'
   ];
 
+<<<<<<< HEAD
   var TICKER = ['f(x) = ax² + bx + c', '<b>∫</b> x² dx = x³/3 + C', '1/3 + 1/6 = 1/2', 'e<sup>iπ</sup> + 1 = 0',
     'x² − 5x + 6 = (x−2)(x−3)', '<b>d/dx</b> sin(2x) = 2cos(2x)', 'a² + b² = c²', '√50 = 5√2', 'sin(π/6) = 1/2'];
 
@@ -6965,10 +7003,36 @@ html.no-fx .confetti-burst { display: none; }
         '<p>' + t(f.desc) + '</p>' +
         '<div class="ex">' + t(f.ex) + '</div>' +
         '<button class="btn sm" data-open-tool="' + f.go + '">' + t('home.open') + '</button>' +
+=======
+  function render() {
+    var html = '<div class="inner">';
+
+    html += '<div class="hero">' +
+      '<div class="kicker">' + MP.i18n.t('home.kicker') + '</div>' +
+      '<h1>MathPath</h1>' +
+      '<p class="tagline">' + MP.i18n.t('home.tagline') + '</p>' +
+      '<div class="stat-row">' +
+      '<span class="chip accent">' + MP.i18n.t('home.tools') + '</span>' +
+      '<span class="chip">' + MP.i18n.t('home.topics') + '</span>' +
+      '<span class="chip">' + MP.i18n.t('home.libraries') + '</span>' +
+      '</div>' +
+      '</div>';
+
+    html += '<div class="section-heading">' + MP.i18n.t('home.sections') + '</div>';
+    html += '<div class="feature-grid">';
+    FEATURES.forEach(function (f) {
+      html += '<div class="feature-card">' +
+        '<div class="fi">' + f.icon + '</div>' +
+        '<h3>' + MP.i18n.t(f.title) + '</h3>' +
+        '<p>' + MP.i18n.t(f.desc) + '</p>' +
+        '<div class="ex">' + MP.i18n.t(f.ex) + '</div>' +
+        '<button class="btn sm" data-open-tool="' + f.go + '">' + MP.i18n.t('home.open') + '</button>' +
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
         '</div>';
     });
     html += '</div>';
 
+<<<<<<< HEAD
     html += '<div class="section-heading reveal">' + t('home.inside') + '</div>';
     html += '<div class="fact-list">';
     FACTS.forEach(function (f, i) {
@@ -6979,14 +7043,28 @@ html.no-fx .confetti-burst { display: none; }
     html += '</div></div>';
     el.content.innerHTML = html;
     el.content.classList.add('home-pane');
+=======
+    html += '<div class="section-heading">' + MP.i18n.t('home.inside') + '</div>';
+    html += '<div class="fact-list">';
+    FACTS.forEach(function (f) {
+      html += '<div class="fact-row"><span class="fmark">✓</span><span>' + MP.i18n.t(f) + '</span></div>';
+    });
+    html += '</div>';
+
+    html += '</div>';
+    el.content.innerHTML = html;
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
 
     Array.prototype.forEach.call(el.content.querySelectorAll('[data-open-tool]'), function (b) {
       b.onclick = function () { MP.app.switchTool(b.getAttribute('data-open-tool')); };
     });
+<<<<<<< HEAD
     Array.prototype.forEach.call(el.content.querySelectorAll('[data-hero-go]'), function (b) {
       b.onclick = function () { MP.app.switchTool(b.getAttribute('data-hero-go')); };
     });
     if (MP.fx) MP.fx.mountHome(el.content);
+=======
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
   }
 
   var el = {};
@@ -8170,7 +8248,10 @@ html.no-fx .confetti-burst { display: none; }
       '<div class="lesson-block"><div class="lb-label">Intuición</div><p>' + R.esc(t.intuition) + '</p></div>' +
       '<div class="lesson-block"><div class="lb-label">Explicación</div><p>' + R.esc(t.explanation) + '</p></div>' +
       '<div class="card example-card"><div class="label">Ejemplo resuelto</div>' + exampleHTML + '</div>' +
+<<<<<<< HEAD
       (MP.kit ? MP.kit.resourcesHTML(t.id, 'Para seguir aprendiendo') : '') +
+=======
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
       '<div class="btn-row" style="margin-top:14px">' +
       '<button class="btn primary" id="learn-action">' + actionLabel(t.action) + '</button>' +
       (MP.exbank.has(t.id) ? '<button class="btn" id="learn-practice">¿Quieres practicar esto? →</button>' : '') +
@@ -8233,11 +8314,17 @@ html.no-fx .confetti-burst { display: none; }
     options = options || {};
     var state = { attempts: 0, hintsUsed: 0, done: false, gaveUp: false };
 
+<<<<<<< HEAD
     container.setAttribute('data-diff', question.difficulty);
     container.innerHTML =
       '<div class="ex-meta">' +
       (options.showTopic ? '<span class="chip topic-chip">' + R.esc(options.topicLabel || question.topicId) + '</span>' : '') +
       '<span class="chip diff-chip" data-d="' + question.difficulty + '">' + MP.exbank.difficultyLabel(question.difficulty) + '</span></div>' +
+=======
+    container.innerHTML =
+      (options.showTopic ? '<div class="ex-meta"><span class="chip">' + R.esc(options.topicLabel || question.topicId) + '</span>' +
+        '<span class="chip">' + MP.exbank.difficultyLabel(question.difficulty) + '</span></div>' : '') +
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
       '<div class="ex-prompt">' + question.prompt + '</div>' +
       '<div class="ex-input" id="ex-input-area"></div>' +
       '<div class="ex-hints" id="ex-hints"></div>' +
@@ -8290,7 +8377,11 @@ html.no-fx .confetti-burst { display: none; }
     function renderHints() {
       if (state.hintsUsed === 0) { hintsBox.innerHTML = ''; return; }
       hintsBox.innerHTML = question.hints.slice(0, state.hintsUsed).map(function (h, i) {
+<<<<<<< HEAD
         return '<div class="hint-box hint-in"><b>💡 Pista ' + (i + 1) + ':</b> ' + R.esc(h) + '</div>';
+=======
+        return '<div class="hint-box"><b>Pista ' + (i + 1) + ':</b> ' + R.esc(h) + '</div>';
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
       }).join('');
     }
 
@@ -8299,6 +8390,7 @@ html.no-fx .confetti-burst { display: none; }
       state.gaveUp = !!gaveUp;
       container.classList.add('ex-done');
       Array.prototype.forEach.call(inputArea.querySelectorAll('input,button'), function (n) { n.disabled = true; });
+<<<<<<< HEAD
       Array.prototype.forEach.call(inputArea.querySelectorAll('.ex-choice'), function (b) {
         var v = b.getAttribute('data-choice');
         var right = question.type === 'mc' ? v === question.correctId : v === String(!!question.correctBool);
@@ -8310,6 +8402,12 @@ html.no-fx .confetti-burst { display: none; }
         '<div class="result-line"><span class="tag">Respuesta correcta</span><span class="val">' +
         R.esc(question.answerText) + '</span></div>' +
         (MP.kit ? MP.kit.resourcesHTML(question.topicId) : '');
+=======
+      procBox.hidden = false;
+      procBox.innerHTML = '<div class="label">Procedimiento</div>' + stepsHTML(question.steps) +
+        '<div class="result-line"><span class="tag">Respuesta correcta</span><span class="val">' +
+        R.esc(question.answerText) + '</span></div>';
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
       if (typeof options.onResult === 'function') {
         options.onResult({
           correct: !!correct, attempts: state.attempts, hintsUsed: state.hintsUsed, gaveUp: state.gaveUp,
@@ -8365,6 +8463,7 @@ html.no-fx .confetti-burst { display: none; }
       state.attempts++;
 
       if (correct) {
+<<<<<<< HEAD
         feedback.innerHTML = '<div class="ex-verdict ok"><span class="v-ico">✓</span><span>Correcto</span></div>';
         if (MP.kit) MP.kit.confetti(feedback.querySelector('.ex-verdict') || container, 24);
         finish(true, false);
@@ -8372,6 +8471,13 @@ html.no-fx .confetti-burst { display: none; }
         feedback.innerHTML = '<div class="ex-verdict bad"><span class="v-ico">✕</span><span>Incorrecto' +
           (state.attempts === 1 ? ' — puedes pedir una pista o intentarlo de nuevo.' : '') + '</span></div>';
         if (MP.kit) MP.kit.shake(container);
+=======
+        feedback.innerHTML = '<div class="ex-verdict ok">✅ Correcto</div>';
+        finish(true, false);
+      } else {
+        feedback.innerHTML = '<div class="ex-verdict bad">❌ Incorrecto' +
+          (state.attempts === 1 ? ' — puedes pedir una pista o intentarlo de nuevo.' : '') + '</div>';
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
         renderActions();
       }
     }
@@ -8414,6 +8520,7 @@ html.no-fx .confetti-burst { display: none; }
   }
 
   var picked = { topics: [], difficulty: 'basico' };
+<<<<<<< HEAD
   var CAT_ICON = ['÷', 'x', 'ƒ', '△', 'θ', '∂', '∫'];
 
   function catIcon(name) {
@@ -8439,6 +8546,15 @@ html.no-fx .confetti-burst { display: none; }
     html += '<div class="section-heading">Elige uno o varios temas <span class="count-pill" id="practice-count">' + picked.topics.length + '</span></div>';
     cats.forEach(function (cat) {
       html += '<div class="practice-cat"><span class="cat-ico" aria-hidden="true">' + catIcon(cat.name) + '</span>' + cat.name + '</div><div class="practice-topic-grid">';
+=======
+
+  function renderPicker() {
+    var cats = availableTopicsByCategory();
+    var html = '<div class="inner">';
+    html += '<div class="section-heading">Elige uno o varios temas</div>';
+    cats.forEach(function (cat) {
+      html += '<div class="practice-cat">' + cat.name + '</div><div class="practice-topic-grid">';
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
       cat.items.forEach(function (t) {
         var sel = picked.topics.indexOf(t.id) >= 0;
         html += '<button class="practice-topic-chip' + (sel ? ' sel' : '') + '" data-topic="' + t.id + '">' + R_esc(t.title) + '</button>';
@@ -8446,6 +8562,7 @@ html.no-fx .confetti-burst { display: none; }
       html += '</div>';
     });
 
+<<<<<<< HEAD
     html += '<div class="section-heading">Dificultad</div><div class="btn-row seg" id="practice-diff-row">';
     MP.exbank.difficulties.forEach(function (d) {
       var sel = picked.difficulty === d;
@@ -8456,6 +8573,25 @@ html.no-fx .confetti-burst { display: none; }
     html += '<div class="btn-row" style="margin-top:22px">' +
       '<button class="btn primary lg start-btn" id="practice-start" ' + (picked.topics.length ? '' : 'disabled') + '>Comenzar práctica <span aria-hidden="true">→</span></button>' +
       '</div>';
+=======
+    html += '<div class="section-heading">Dificultad</div><div class="btn-row" id="practice-diff-row">';
+    MP.exbank.difficulties.forEach(function (d) {
+      var sel = picked.difficulty === d;
+      html += '<button class="btn' + (sel ? ' primary' : '') + '" data-diff="' + d + '">' + MP.exbank.difficultyLabel(d) + '</button>';
+    });
+    html += '</div>';
+
+    html += '<div class="btn-row" style="margin-top:18px">' +
+      '<button class="btn primary" id="practice-start" ' + (picked.topics.length ? '' : 'disabled') + '>Comenzar práctica</button>' +
+      '</div>';
+
+    var stats = MP.profiles.getData().practice;
+    if (stats.attempted > 0) {
+      html += '<div class="section-heading">Tu progreso en este perfil</div>' +
+        '<div class="fact-row"><span class="fmark">' + Math.round(100 * stats.correct / stats.attempted) + '%</span>' +
+        '<span>' + stats.correct + ' de ' + stats.attempted + ' ejercicios correctos en total.</span></div>';
+    }
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
     html += '</div>';
     el.content.innerHTML = html;
     bindPicker();
@@ -8463,15 +8599,20 @@ html.no-fx .confetti-burst { display: none; }
 
   function R_esc(s) { return MP.render.esc(s); }
 
+<<<<<<< HEAD
   // Los cambios de selección se aplican en el sitio: nada se vuelve a pintar ni a animar.
   function bindPicker() {
     var startBtn = document.getElementById('practice-start');
     var counter = document.getElementById('practice-count');
+=======
+  function bindPicker() {
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
     Array.prototype.forEach.call(el.content.querySelectorAll('[data-topic]'), function (b) {
       b.onclick = function () {
         var id = b.getAttribute('data-topic');
         var i = picked.topics.indexOf(id);
         if (i >= 0) picked.topics.splice(i, 1); else picked.topics.push(id);
+<<<<<<< HEAD
         b.classList.toggle('sel', i < 0);
         if (counter) {
           counter.textContent = picked.topics.length;
@@ -8487,6 +8628,15 @@ html.no-fx .confetti-burst { display: none; }
         Array.prototype.forEach.call(diffBtns, function (x) { x.classList.toggle('primary', x === b); });
       };
     });
+=======
+        renderPicker();
+      };
+    });
+    Array.prototype.forEach.call(el.content.querySelectorAll('[data-diff]'), function (b) {
+      b.onclick = function () { picked.difficulty = b.getAttribute('data-diff'); renderPicker(); };
+    });
+    var startBtn = document.getElementById('practice-start');
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
     if (startBtn) startBtn.onclick = function () { startSession(picked.topics.slice(), picked.difficulty, 8); };
   }
 
@@ -8503,6 +8653,7 @@ html.no-fx .confetti-burst { display: none; }
   function startSession(topicIds, difficulty, count) {
     topicIds = topicIds.filter(function (id) { return MP.exbank.has(id); });
     if (!topicIds.length) return;
+<<<<<<< HEAD
     session = { topics: topicIds, difficulty: difficulty, index: 0, correct: 0, wrong: 0, total: count,
       results: [], streak: 0, best: 0, byTopic: {} };
     nextExercise();
@@ -8520,10 +8671,17 @@ html.no-fx .confetti-burst { display: none; }
     if (right) right.innerHTML = hudRight();
   }
 
+=======
+    session = { topics: topicIds, difficulty: difficulty, index: 0, correct: 0, wrong: 0, total: count };
+    nextExercise();
+  }
+
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
   function nextExercise() {
     if (session.index >= session.total) { renderSummary(); return; }
     var topicId = session.topics[session.index % session.topics.length];
     var q = MP.exbank.generate(topicId, session.difficulty);
+<<<<<<< HEAD
     var prev = Math.round(100 * Math.max(0, session.index - 1) / session.total);
     var now = Math.round(100 * session.index / session.total);
 
@@ -8540,10 +8698,23 @@ html.no-fx .confetti-burst { display: none; }
     setTimeout(function () { if (fill && fill.style) fill.style.width = now + '%'; }, 40);
 
     var answered = session.index;
+=======
+
+    el.content.innerHTML =
+      '<div class="inner">' +
+      '<div class="practice-progress">' +
+      '<span class="muted small">Ejercicio ' + (session.index + 1) + ' de ' + session.total + '</span>' +
+      '<div class="progress-track"><div class="progress-fill" style="width:' + Math.round(100 * session.index / session.total) + '%"></div></div>' +
+      '</div>' +
+      '<div class="card example-card" id="practice-card"></div>' +
+      '</div>';
+
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
     MP.widgets.renderExercise(document.getElementById('practice-card'), q, {
       showTopic: session.topics.length > 1,
       topicLabel: topicLabel(topicId),
       onResult: function (res) {
+<<<<<<< HEAD
         if (res.correct) { session.correct++; session.streak++; session.best = Math.max(session.best, session.streak); }
         else { session.wrong++; session.streak = 0; }
         session.results[answered] = !!res.correct;
@@ -8551,6 +8722,10 @@ html.no-fx .confetti-burst { display: none; }
         bt.t++; if (res.correct) bt.c++;
         MP.profiles.recordPractice(topicId, res.correct);
         paintHud(answered, res.correct);
+=======
+        if (res.correct) session.correct++; else session.wrong++;
+        MP.profiles.recordPractice(topicId, res.correct);
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
       },
       onNext: function () { session.index++; nextExercise(); },
       nextLabel: (session.index + 1 >= session.total) ? 'Ver resumen' : 'Siguiente ejercicio'
@@ -8559,6 +8734,7 @@ html.no-fx .confetti-burst { display: none; }
 
   function renderSummary() {
     var pct = session.total ? Math.round(100 * session.correct / session.total) : 0;
+<<<<<<< HEAD
     var g = MP.kit.grade(pct);
     var rows = Object.keys(session.byTopic).map(function (id) {
       return { id: id, label: topicLabel(id), correct: session.byTopic[id].c, total: session.byTopic[id].t };
@@ -8584,6 +8760,20 @@ html.no-fx .confetti-burst { display: none; }
     el.content.innerHTML = html;
     MP.kit.countUp(el.content);
     if (pct >= 80) MP.kit.confetti(el.content.querySelector('.ring'), 60);
+=======
+    el.content.innerHTML =
+      '<div class="inner">' +
+      '<div class="section-heading">Resumen de la práctica</div>' +
+      '<div class="result-summary">' +
+      '<div class="result-score">' + session.correct + ' / ' + session.total + '</div>' +
+      '<div class="progress-track"><div class="progress-fill" style="width:' + pct + '%"></div></div>' +
+      '<div class="muted small" style="margin-top:6px">' + pct + '% correcto</div>' +
+      '</div>' +
+      '<div class="btn-row" style="margin-top:16px">' +
+      '<button class="btn primary" id="practice-again">Practicar de nuevo</button>' +
+      '<button class="btn" id="practice-back">Elegir otro tema</button>' +
+      '</div></div>';
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
     document.getElementById('practice-again').onclick = function () {
       startSession(session.topics, session.difficulty, session.total);
     };
@@ -8650,6 +8840,7 @@ html.no-fx .confetti-burst { display: none; }
     });
 
     var html = '<div class="inner">';
+<<<<<<< HEAD
     html += '<div class="mode-hero exam-hero"><span class="orb o1" aria-hidden="true">🎓</span><span class="orb o2" aria-hidden="true">∫</span><span class="orb o3" aria-hidden="true">Δ</span>' +
       '<div class="kicker">Mini exámenes</div><h2>Arma tu propio examen</h2>' +
       '<p>Elige nivel, temas y dificultad. Cada pregunta se genera en el momento y al final ves la revisión con enlaces para repasar.</p></div>';
@@ -8657,6 +8848,11 @@ html.no-fx .confetti-burst { display: none; }
     html += '<div class="section-heading">Nivel</div><div class="btn-row seg level-row">';
     Object.keys(LEVEL_LABEL).forEach(function (lv) {
       html += '<button class="btn seg-btn' + (cfg.level === lv ? ' primary' : '') + '" data-level="' + lv + '">' + LEVEL_LABEL[lv] + '</button>';
+=======
+    html += '<div class="section-heading">Nivel</div><div class="btn-row">';
+    Object.keys(LEVEL_LABEL).forEach(function (lv) {
+      html += '<button class="btn' + (cfg.level === lv ? ' primary' : '') + '" data-level="' + lv + '">' + LEVEL_LABEL[lv] + '</button>';
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
     });
     html += '</div>';
 
@@ -8670,6 +8866,7 @@ html.no-fx .confetti-burst { display: none; }
       html += '</div>';
     });
 
+<<<<<<< HEAD
     html += '<div class="section-heading">Cantidad de preguntas</div><div class="btn-row seg" id="exam-count-row">';
     [5, 10, 15, 20].forEach(function (n) {
       html += '<button class="btn seg-btn' + (cfg.count === n ? ' primary' : '') + '" data-count="' + n + '">' + n + '</button>';
@@ -8679,6 +8876,17 @@ html.no-fx .confetti-burst { display: none; }
     html += '<div class="section-heading">Dificultad</div><div class="btn-row seg" id="exam-diff-row">';
     Object.keys(DIFF_LABEL).forEach(function (d) {
       html += '<button class="btn seg-btn' + (cfg.difficulty === d ? ' primary' : '') + '" data-d="' + d + '" data-ediff="' + d + '">' + DIFF_LABEL[d] + '</button>';
+=======
+    html += '<div class="section-heading">Cantidad de preguntas</div><div class="btn-row">';
+    [5, 10, 15, 20].forEach(function (n) {
+      html += '<button class="btn' + (cfg.count === n ? ' primary' : '') + '" data-count="' + n + '">' + n + '</button>';
+    });
+    html += '</div>';
+
+    html += '<div class="section-heading">Dificultad</div><div class="btn-row">';
+    Object.keys(DIFF_LABEL).forEach(function (d) {
+      html += '<button class="btn' + (cfg.difficulty === d ? ' primary' : '') + '" data-ediff="' + d + '">' + DIFF_LABEL[d] + '</button>';
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
     });
     html += '</div>';
 
@@ -8686,6 +8894,7 @@ html.no-fx .confetti-burst { display: none; }
       '<span>Usar temporizador</span><label class="switch"><input type="checkbox" id="exam-timer-toggle" ' + (cfg.timer ? 'checked' : '') + '>' +
       '<span class="track"></span><span class="thumb"></span></label></div>';
 
+<<<<<<< HEAD
     html += '<div class="exam-summary" id="exam-summary"></div>';
     html += '<div class="btn-row" style="margin-top:14px">' +
       '<button class="btn primary lg start-btn" id="exam-create" ' + (cfg.topics.length ? '' : 'disabled') + '>Crear mini examen <span aria-hidden="true">→</span></button></div>';
@@ -8700,10 +8909,23 @@ html.no-fx .confetti-burst { display: none; }
           '<div class="bd-bar"><i class="' + (pct >= 70 ? 'hi' : pct >= 50 ? 'mid' : 'lo') + '" style="width:' + pct + '%"></i></div></div>';
       });
       html += '</div>';
+=======
+    html += '<div class="btn-row" style="margin-top:18px">' +
+      '<button class="btn primary" id="exam-create" ' + (cfg.topics.length ? '' : 'disabled') + '>Crear mini examen</button></div>';
+
+    var hist = MP.profiles.getData().exams;
+    if (hist.length) {
+      html += '<div class="section-heading">Exámenes anteriores en este perfil</div>';
+      hist.slice(0, 5).forEach(function (h) {
+        html += '<div class="obj-item"><div class="obj-head"><span class="obj-name" style="font-style:normal">' +
+          h.score + '/' + h.total + '</span><span class="obj-kind">' + new Date(h.date).toLocaleDateString() + ' · ' + h.topicsLabel + '</span></div></div>';
+      });
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
     }
     html += '</div>';
     el.content.innerHTML = html;
     bindConfig();
+<<<<<<< HEAD
     paintSummary();
   }
 
@@ -8717,6 +8939,8 @@ html.no-fx .confetti-burst { display: none; }
       '<span class="chip">' + DIFF_LABEL[cfg.difficulty] + '</span>' +
       '<span class="chip">≈ ' + mins + ' min</span>' + (cfg.timer ? '<span class="chip">⏱ con temporizador</span>' : '');
     MP.kit.bump(box);
+=======
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
   }
 
   function bindConfig() {
@@ -8730,6 +8954,7 @@ html.no-fx .confetti-burst { display: none; }
         if (!c.checked && i >= 0) cfg.topics.splice(i, 1);
         var btn = document.getElementById('exam-create');
         if (btn) btn.disabled = cfg.topics.length === 0;
+<<<<<<< HEAD
         paintSummary();
       };
     });
@@ -8751,6 +8976,18 @@ html.no-fx .confetti-burst { display: none; }
     });
     var timerToggle = document.getElementById('exam-timer-toggle');
     if (timerToggle) timerToggle.onchange = function () { cfg.timer = timerToggle.checked; paintSummary(); };
+=======
+      };
+    });
+    Array.prototype.forEach.call(el.content.querySelectorAll('[data-count]'), function (b) {
+      b.onclick = function () { cfg.count = parseInt(b.getAttribute('data-count'), 10); renderConfig(); };
+    });
+    Array.prototype.forEach.call(el.content.querySelectorAll('[data-ediff]'), function (b) {
+      b.onclick = function () { cfg.difficulty = b.getAttribute('data-ediff'); renderConfig(); };
+    });
+    var timerToggle = document.getElementById('exam-timer-toggle');
+    if (timerToggle) timerToggle.onchange = function () { cfg.timer = timerToggle.checked; };
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
     var createBtn = document.getElementById('exam-create');
     if (createBtn) createBtn.onclick = startExam;
   }
@@ -8793,6 +9030,7 @@ html.no-fx .confetti-burst { display: none; }
     return (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
   }
 
+<<<<<<< HEAD
   function answeredResults() {
     return exam.answers.map(function (a) { return a ? !!a.correct : undefined; });
   }
@@ -8823,6 +9061,24 @@ html.no-fx .confetti-burst { display: none; }
         var dot = el.content.querySelectorAll('.stepper .dot')[answered];
         if (dot) dot.className = 'dot ' + (res.correct ? 'ok' : 'bad');
       },
+=======
+  function renderQuestion() {
+    var q = exam.questions[exam.index];
+    var meta = topicMeta(q.topicId);
+    el.content.innerHTML =
+      '<div class="inner">' +
+      '<div class="practice-progress">' +
+      '<span class="muted small">Pregunta ' + (exam.index + 1) + ' de ' + exam.questions.length + '</span>' +
+      (cfg.timer ? '<span class="muted small mono" id="exam-timer-display" style="margin-left:10px">⏱ 00:00</span>' : '') +
+      '<div class="progress-track"><div class="progress-fill" style="width:' + Math.round(100 * exam.index / exam.questions.length) + '%"></div></div>' +
+      '</div>' +
+      '<div class="card example-card" id="exam-card"></div>' +
+      '</div>';
+
+    MP.widgets.renderExercise(document.getElementById('exam-card'), q, {
+      showTopic: true, topicLabel: meta.title,
+      onResult: function (res) { exam.answers[exam.index] = res; },
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
       onNext: function () {
         exam.index++;
         if (exam.index >= exam.questions.length) finishExam(); else renderQuestion();
@@ -8836,12 +9092,18 @@ html.no-fx .confetti-burst { display: none; }
     var correct = exam.answers.filter(function (a) { return a && a.correct; }).length;
     var total = exam.questions.length;
     var elapsed = Math.floor((Date.now() - exam.startTime) / 1000);
+<<<<<<< HEAD
     var missedTopics = [], byTopic = {};
     exam.answers.forEach(function (a, i) {
       var id = exam.questions[i].topicId;
       var bt = byTopic[id] = byTopic[id] || { c: 0, t: 0 };
       bt.t++; if (a && a.correct) bt.c++;
       if (a && !a.correct && missedTopics.indexOf(id) < 0) missedTopics.push(id);
+=======
+    var missedTopics = [];
+    exam.answers.forEach(function (a, i) {
+      if (a && !a.correct && missedTopics.indexOf(exam.questions[i].topicId) < 0) missedTopics.push(exam.questions[i].topicId);
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
     });
 
     MP.profiles.recordExam({
@@ -8851,6 +9113,7 @@ html.no-fx .confetti-burst { display: none; }
     });
 
     var pct = total ? Math.round(100 * correct / total) : 0;
+<<<<<<< HEAD
     var g = MP.kit.grade(pct);
     var rows = Object.keys(byTopic).map(function (id) {
       return { label: topicMeta(id).title, correct: byTopic[id].c, total: byTopic[id].t };
@@ -8873,10 +9136,23 @@ html.no-fx .confetti-burst { display: none; }
       html += '<div class="section-heading">Para repasar</div>';
       missedTopics.slice(0, 4).forEach(function (id) { html += MP.kit.resourcesHTML(id, 'Repasa: ' + topicMeta(id).title); });
     }
+=======
+    var html = '<div class="inner">';
+    html += '<div class="exam-result-head">🎓 Mini examen terminado</div>';
+    html += '<div class="result-summary"><div class="result-score">' + correct + ' / ' + total + '</div>' +
+      '<div class="progress-track"><div class="progress-fill" style="width:' + pct + '%"></div></div>' +
+      '<div class="muted small" style="margin-top:6px">' + pct + '% correcto' +
+      (cfg.timer ? ' · tiempo ' + fmtTime(elapsed) : '') + '</div></div>';
+
+    html += '<div class="btn-row" style="margin:14px 0">' +
+      '<span class="chip accent">✓ ' + correct + ' correctas</span>' +
+      '<span class="chip">✗ ' + (total - correct) + ' incorrectas</span></div>';
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
 
     html += '<div class="section-heading">Revisión</div><div id="exam-review"></div>';
 
     html += '<div class="btn-row" style="margin-top:16px">' +
+<<<<<<< HEAD
       '<button class="btn primary lg" id="exam-repeat">Repetir examen</button>';
     if (missedTopics.length) html += '<button class="btn lg" id="exam-practice-errors">Practicar mis errores</button>';
     html += '<button class="btn ghost lg" id="exam-home">Volver a configurar</button></div>';
@@ -8885,25 +9161,47 @@ html.no-fx .confetti-burst { display: none; }
     el.content.innerHTML = html;
     MP.kit.countUp(el.content);
     if (pct >= 80) MP.kit.confetti(el.content.querySelector('.ring'), 60);
+=======
+      '<button class="btn primary" id="exam-repeat">Repetir examen</button>';
+    if (missedTopics.length) html += '<button class="btn" id="exam-practice-errors">Practicar mis errores</button>';
+    html += '<button class="btn ghost" id="exam-home">Volver a configurar</button></div>';
+    html += '</div>';
+
+    el.content.innerHTML = html;
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
 
     var reviewBox = document.getElementById('exam-review');
     exam.questions.forEach(function (q, i) {
       var a = exam.answers[i] || { correct: false, gaveUp: true };
       var row = document.createElement('div');
+<<<<<<< HEAD
       row.className = 'exam-review-item ' + (a.correct ? 'is-ok' : 'is-bad');
       row.style.setProperty && row.style.setProperty('--si', i);
       row.innerHTML = '<button class="exam-review-head">' +
         '<span class="' + (a.correct ? 'ok' : 'bad') + '">' + (a.correct ? '✓' : '✗') + '</span>' +
         '<span class="exam-review-prompt">' + q.prompt + '</span><span class="chev" aria-hidden="true">▾</span></button>' +
+=======
+      row.className = 'exam-review-item';
+      row.innerHTML = '<button class="exam-review-head">' +
+        '<span class="' + (a.correct ? 'ok' : 'bad') + '">' + (a.correct ? '✓' : '✗') + '</span>' +
+        '<span class="exam-review-prompt">' + q.prompt + '</span></button>' +
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
         '<div class="exam-review-body" hidden>' +
         '<div class="result-line"><span class="tag">Respuesta correcta</span><span class="val">' + R.esc(q.answerText) + '</span></div>' +
         (q.steps && q.steps.length ? '<div class="steps">' + q.steps.map(function (s) {
           return '<div class="step"><div><div class="why">' + s.why + '</div><div class="what">' + s.html + '</div></div></div>';
+<<<<<<< HEAD
         }).join('') + '</div>' : '') +
         MP.kit.resourcesHTML(q.topicId, 'Más sobre ' + topicMeta(q.topicId).title, true) + '</div>';
       var head = row.querySelector('.exam-review-head');
       var body = row.querySelector('.exam-review-body');
       head.onclick = function () { body.hidden = !body.hidden; row.classList.toggle('open', !body.hidden); };
+=======
+        }).join('') + '</div>' : '') + '</div>';
+      var head = row.querySelector('.exam-review-head');
+      var body = row.querySelector('.exam-review-body');
+      head.onclick = function () { body.hidden = !body.hidden; };
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
       reviewBox.appendChild(row);
     });
 
@@ -9140,7 +9438,10 @@ html.no-fx .confetti-burst { display: none; }
       });
       document.getElementById('tool-title').textContent = MP.i18n.t('tool.' + id);
       store('mp.tool', id);
+<<<<<<< HEAD
       if (MP.fx) MP.fx.onTool(id);
+=======
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
       setTimeout(redrawAll, 0);
     }
     var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;

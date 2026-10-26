@@ -30,11 +30,17 @@
     options = options || {};
     var state = { attempts: 0, hintsUsed: 0, done: false, gaveUp: false };
 
+<<<<<<< HEAD
     container.setAttribute('data-diff', question.difficulty);
     container.innerHTML =
       '<div class="ex-meta">' +
       (options.showTopic ? '<span class="chip topic-chip">' + R.esc(options.topicLabel || question.topicId) + '</span>' : '') +
       '<span class="chip diff-chip" data-d="' + question.difficulty + '">' + MP.exbank.difficultyLabel(question.difficulty) + '</span></div>' +
+=======
+    container.innerHTML =
+      (options.showTopic ? '<div class="ex-meta"><span class="chip">' + R.esc(options.topicLabel || question.topicId) + '</span>' +
+        '<span class="chip">' + MP.exbank.difficultyLabel(question.difficulty) + '</span></div>' : '') +
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
       '<div class="ex-prompt">' + question.prompt + '</div>' +
       '<div class="ex-input" id="ex-input-area"></div>' +
       '<div class="ex-hints" id="ex-hints"></div>' +
@@ -87,7 +93,11 @@
     function renderHints() {
       if (state.hintsUsed === 0) { hintsBox.innerHTML = ''; return; }
       hintsBox.innerHTML = question.hints.slice(0, state.hintsUsed).map(function (h, i) {
+<<<<<<< HEAD
         return '<div class="hint-box hint-in"><b>💡 Pista ' + (i + 1) + ':</b> ' + R.esc(h) + '</div>';
+=======
+        return '<div class="hint-box"><b>Pista ' + (i + 1) + ':</b> ' + R.esc(h) + '</div>';
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
       }).join('');
     }
 
@@ -96,6 +106,7 @@
       state.gaveUp = !!gaveUp;
       container.classList.add('ex-done');
       Array.prototype.forEach.call(inputArea.querySelectorAll('input,button'), function (n) { n.disabled = true; });
+<<<<<<< HEAD
       Array.prototype.forEach.call(inputArea.querySelectorAll('.ex-choice'), function (b) {
         var v = b.getAttribute('data-choice');
         var right = question.type === 'mc' ? v === question.correctId : v === String(!!question.correctBool);
@@ -107,6 +118,12 @@
         '<div class="result-line"><span class="tag">Respuesta correcta</span><span class="val">' +
         R.esc(question.answerText) + '</span></div>' +
         (MP.kit ? MP.kit.resourcesHTML(question.topicId) : '');
+=======
+      procBox.hidden = false;
+      procBox.innerHTML = '<div class="label">Procedimiento</div>' + stepsHTML(question.steps) +
+        '<div class="result-line"><span class="tag">Respuesta correcta</span><span class="val">' +
+        R.esc(question.answerText) + '</span></div>';
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
       if (typeof options.onResult === 'function') {
         options.onResult({
           correct: !!correct, attempts: state.attempts, hintsUsed: state.hintsUsed, gaveUp: state.gaveUp,
@@ -162,6 +179,7 @@
       state.attempts++;
 
       if (correct) {
+<<<<<<< HEAD
         feedback.innerHTML = '<div class="ex-verdict ok"><span class="v-ico">✓</span><span>Correcto</span></div>';
         if (MP.kit) MP.kit.confetti(feedback.querySelector('.ex-verdict') || container, 24);
         finish(true, false);
@@ -169,6 +187,13 @@
         feedback.innerHTML = '<div class="ex-verdict bad"><span class="v-ico">✕</span><span>Incorrecto' +
           (state.attempts === 1 ? ' — puedes pedir una pista o intentarlo de nuevo.' : '') + '</span></div>';
         if (MP.kit) MP.kit.shake(container);
+=======
+        feedback.innerHTML = '<div class="ex-verdict ok">✅ Correcto</div>';
+        finish(true, false);
+      } else {
+        feedback.innerHTML = '<div class="ex-verdict bad">❌ Incorrecto' +
+          (state.attempts === 1 ? ' — puedes pedir una pista o intentarlo de nuevo.' : '') + '</div>';
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
         renderActions();
       }
     }

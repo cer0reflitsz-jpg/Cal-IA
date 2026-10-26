@@ -19,8 +19,11 @@
     "sections": "Secciones",
     "menuOpen": "Abrir menú de secciones",
     "menuClose": "Cerrar menú de secciones",
+<<<<<<< HEAD
     "fxOn": "Efectos activados (pulsa para desactivar)",
     "fxOff": "Efectos desactivados (pulsa para activar)",
+=======
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
     "light": "Cambiar a modo claro",
     "dark": "Cambiar a modo oscuro",
     "profile": "Cambiar de perfil",
@@ -80,8 +83,11 @@
     "sections": "Sections",
     "menuOpen": "Open section menu",
     "menuClose": "Close section menu",
+<<<<<<< HEAD
     "fxOn": "Effects on (click to turn off)",
     "fxOff": "Effects off (click to turn on)",
+=======
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
     "light": "Switch to light mode",
     "dark": "Switch to dark mode",
     "profile": "Switch profile",

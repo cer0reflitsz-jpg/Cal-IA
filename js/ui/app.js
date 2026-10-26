@@ -51,7 +51,10 @@
       });
       document.getElementById('tool-title').textContent = MP.i18n.t('tool.' + id);
       store('mp.tool', id);
+<<<<<<< HEAD
       if (MP.fx) MP.fx.onTool(id);
+=======
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
       setTimeout(redrawAll, 0);
     }
     var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;

@@ -45,10 +45,14 @@ Cuatro capas, de abajo arriba. Cada capa sólo conoce la anterior.
 
 ```
 styles/                 tokens → base → layout → components → math
+<<<<<<< HEAD
   tokens.css            colores, tipografía, tema claro y oscuro, --hue dinámico
   cinema.css            pantalla de carga y portada
   motion.css            animación de cada elemento de cada herramienta
   practice.css          Practica y Mini exámenes: HUD, anillo, barras, enlaces
+=======
+  tokens.css            colores, tipografía, tema claro y oscuro
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
   math.css              fracciones, radicales, exponentes
 
 js/core/                motor matemático (no toca el DOM)
@@ -70,12 +74,17 @@ js/geometry/
   model.js              objetos geométricos y propiedades calculadas
   canvas.js             herramientas, arrastre, selección, dibujo
 
+<<<<<<< HEAD
 js/content/resources.js enlaces por tema (Wikipedia, Khan Academy, vídeos; ES/EN)
 
 js/ui/                  una herramienta por archivo
   graph.js  geometry.js  calculator.js  algebra.js
   practice-kit.js       puntos de progreso, anillo, barras, confeti y enlaces
   cinema.js             carga, tono dinámico y escenas de la portada
+=======
+js/ui/                  una herramienta por archivo
+  graph.js  geometry.js  calculator.js  algebra.js
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
   app.js                navegación, tema, comunicación entre herramientas
 ```
 

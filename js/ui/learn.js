@@ -236,7 +236,10 @@
       '<div class="lesson-block"><div class="lb-label">Intuición</div><p>' + R.esc(t.intuition) + '</p></div>' +
       '<div class="lesson-block"><div class="lb-label">Explicación</div><p>' + R.esc(t.explanation) + '</p></div>' +
       '<div class="card example-card"><div class="label">Ejemplo resuelto</div>' + exampleHTML + '</div>' +
+<<<<<<< HEAD
       (MP.kit ? MP.kit.resourcesHTML(t.id, 'Para seguir aprendiendo') : '') +
+=======
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
       '<div class="btn-row" style="margin-top:14px">' +
       '<button class="btn primary" id="learn-action">' + actionLabel(t.action) + '</button>' +
       (MP.exbank.has(t.id) ? '<button class="btn" id="learn-practice">¿Quieres practicar esto? →</button>' : '') +

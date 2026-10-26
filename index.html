@@ -12,9 +12,12 @@
 <link rel="stylesheet" href="styles/components.css">
 <link rel="stylesheet" href="styles/math.css">
 <link rel="stylesheet" href="styles/content.css">
+<<<<<<< HEAD
 <link rel="stylesheet" href="styles/cinema.css">
 <link rel="stylesheet" href="styles/motion.css">
 <link rel="stylesheet" href="styles/practice.css">
+=======
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
 
@@ -25,14 +28,18 @@
     if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     document.documentElement.setAttribute('data-theme', t);
   } catch (e) {}
+<<<<<<< HEAD
   // La pantalla de carga mantiene la portada en pausa; si algo falla, se libera sola.
   try { if (localStorage.getItem('mp.fx') === 'off') document.documentElement.classList.add('no-fx'); } catch (e) {}
   document.documentElement.classList.add('is-loading');
   setTimeout(function () { document.documentElement.classList.remove('is-loading'); }, 7000);
+=======
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
 </script>
 </head>
 <body>
 
+<<<<<<< HEAD
 <!-- ── Pantalla de carga ──────────────────────────────────── -->
 <div class="loader" id="loader" aria-hidden="true">
   <div class="loader-half l"></div>
@@ -46,6 +53,8 @@
   <div class="loader-count" id="loader-count">000</div>
 </div>
 
+=======
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
 <div class="app">
 
   <!-- ── Barra superior ─────────────────────────────────── -->
@@ -91,7 +100,10 @@
       </button>
       <div class="profile-panel" id="profile-panel" hidden></div>
     </div>
+<<<<<<< HEAD
     <button class="btn icon" id="fx-btn" aria-pressed="true" data-i18n-title="fxOn" data-i18n-aria-label="fxOn" title="Efectos" aria-label="Efectos">✦</button>
+=======
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
     <button class="btn icon" id="theme-btn" title="Cambiar tema" aria-label="Cambiar tema">☾</button>
   </header>
 
@@ -374,13 +386,19 @@
 <script src="js/content/profiles.js"></script>
 <script src="js/content/topics.js"></script>
 <script src="js/content/exercises.js"></script>
+<<<<<<< HEAD
 <script src="js/content/resources.js"></script>
+=======
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
 
 <!-- ── Interfaz ────────────────────────────────────────── -->
 <script src="js/ui/i18n.js"></script>
 <script src="js/ui/symbol-picker.js"></script>
+<<<<<<< HEAD
 <script src="js/ui/cinema.js"></script>
 <script src="js/ui/practice-kit.js"></script>
+=======
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
 <script src="js/ui/home.js"></script>
 <script src="js/ui/graph.js"></script>
 <script src="js/ui/geometry.js"></script>

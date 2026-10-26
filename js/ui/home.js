@@ -42,6 +42,7 @@
     'home.fact.4'
   ];
 
+<<<<<<< HEAD
   var TICKER = ['f(x) = ax² + bx + c', '<b>∫</b> x² dx = x³/3 + C', '1/3 + 1/6 = 1/2', 'e<sup>iπ</sup> + 1 = 0',
     'x² − 5x + 6 = (x−2)(x−3)', '<b>d/dx</b> sin(2x) = 2cos(2x)', 'a² + b² = c²', '√50 = 5√2', 'sin(π/6) = 1/2'];
 
@@ -86,10 +87,36 @@
         '<p>' + t(f.desc) + '</p>' +
         '<div class="ex">' + t(f.ex) + '</div>' +
         '<button class="btn sm" data-open-tool="' + f.go + '">' + t('home.open') + '</button>' +
+=======
+  function render() {
+    var html = '<div class="inner">';
+
+    html += '<div class="hero">' +
+      '<div class="kicker">' + MP.i18n.t('home.kicker') + '</div>' +
+      '<h1>MathPath</h1>' +
+      '<p class="tagline">' + MP.i18n.t('home.tagline') + '</p>' +
+      '<div class="stat-row">' +
+      '<span class="chip accent">' + MP.i18n.t('home.tools') + '</span>' +
+      '<span class="chip">' + MP.i18n.t('home.topics') + '</span>' +
+      '<span class="chip">' + MP.i18n.t('home.libraries') + '</span>' +
+      '</div>' +
+      '</div>';
+
+    html += '<div class="section-heading">' + MP.i18n.t('home.sections') + '</div>';
+    html += '<div class="feature-grid">';
+    FEATURES.forEach(function (f) {
+      html += '<div class="feature-card">' +
+        '<div class="fi">' + f.icon + '</div>' +
+        '<h3>' + MP.i18n.t(f.title) + '</h3>' +
+        '<p>' + MP.i18n.t(f.desc) + '</p>' +
+        '<div class="ex">' + MP.i18n.t(f.ex) + '</div>' +
+        '<button class="btn sm" data-open-tool="' + f.go + '">' + MP.i18n.t('home.open') + '</button>' +
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
         '</div>';
     });
     html += '</div>';
 
+<<<<<<< HEAD
     html += '<div class="section-heading reveal">' + t('home.inside') + '</div>';
     html += '<div class="fact-list">';
     FACTS.forEach(function (f, i) {
@@ -100,14 +127,28 @@
     html += '</div></div>';
     el.content.innerHTML = html;
     el.content.classList.add('home-pane');
+=======
+    html += '<div class="section-heading">' + MP.i18n.t('home.inside') + '</div>';
+    html += '<div class="fact-list">';
+    FACTS.forEach(function (f) {
+      html += '<div class="fact-row"><span class="fmark">✓</span><span>' + MP.i18n.t(f) + '</span></div>';
+    });
+    html += '</div>';
+
+    html += '</div>';
+    el.content.innerHTML = html;
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
 
     Array.prototype.forEach.call(el.content.querySelectorAll('[data-open-tool]'), function (b) {
       b.onclick = function () { MP.app.switchTool(b.getAttribute('data-open-tool')); };
     });
+<<<<<<< HEAD
     Array.prototype.forEach.call(el.content.querySelectorAll('[data-hero-go]'), function (b) {
       b.onclick = function () { MP.app.switchTool(b.getAttribute('data-hero-go')); };
     });
     if (MP.fx) MP.fx.mountHome(el.content);
+=======
+>>>>>>> 4fd80e6b6f393d861f18b4cd788ca1706cd23baf
   }
 
   var el = {};
