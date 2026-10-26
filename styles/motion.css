@@ -1,0 +1,455 @@
+/* ── Movimiento: cada elemento de cada herramienta ────────────
+   Capa de animación global. Las entradas escalonadas se repiten
+   cada vez que se abre una sección o se vuelve a pintar una lista.
+   Con "reducir movimiento" o el botón ✦ apagado, todo queda quieto. */
+
+/* Entradas de las herramientas */
+.tool.active .split > .side, .tool.active .columns > .col:first-child { animation: from-left .7s var(--ease) both .12s; }
+.tool.active .split > .main, .tool.active .columns > .col + .col { animation: from-right .7s var(--ease) both .2s; }
+.tool.active .canvas-wrap { animation: wipe 1s var(--ease) both .25s; }
+.tool.active .canvas-tools .btn { animation: pop-in .5s var(--ease) both; animation-delay: calc(.9s + var(--si, 0) * 70ms); }
+.tool.active .canvas-tools .btn:nth-child(2) { --si: 1; }
+.tool.active .canvas-tools .btn:nth-child(3) { --si: 2; }
+.tool.active .panel-head { animation: pop-in .6s var(--ease) both .15s; }
+
+/* Elementos con entrada escalonada */
+.tool.active :is(
+  .keypad > .key,
+  .steps > .step,
+  .tool-grid > .tool-btn,
+  .practice-topic-grid > .practice-topic-chip,
+  #learn-list > *,
+  .btn-row > .btn,
+  #g-list > .expr-item,
+  #geo-objects > .obj-item,
+  #calc-history > .history-item,
+  .ex-choices > .ex-choice,
+  .exam-topic-list > *,
+  #alg-output > *,
+  #calc-output > *,
+  .content-pane .inner > *:not(.hero-stage),
+  .panel-body > .card,
+  .panel-body > .label,
+  .toggle-row
+) { animation: pop-in .6s var(--ease) both; animation-delay: calc(var(--si, 14) * 45ms + .18s); }
+.tool.active :is(
+  .keypad > .key,
+  .steps > .step,
+  .tool-grid > .tool-btn,
+  .practice-topic-grid > .practice-topic-chip,
+  #learn-list > *,
+  .btn-row > .btn,
+  #g-list > .expr-item,
+  #geo-objects > .obj-item,
+  #calc-history > .history-item,
+  .ex-choices > .ex-choice,
+  .exam-topic-list > *,
+  #alg-output > *,
+  #calc-output > *,
+  .content-pane .inner > *:not(.hero-stage),
+  .panel-body > .card,
+  .panel-body > .label,
+  .toggle-row
+):nth-child(1) { --si: 0; }
+.tool.active :is(
+  .keypad > .key,
+  .steps > .step,
+  .tool-grid > .tool-btn,
+  .practice-topic-grid > .practice-topic-chip,
+  #learn-list > *,
+  .btn-row > .btn,
+  #g-list > .expr-item,
+  #geo-objects > .obj-item,
+  #calc-history > .history-item,
+  .ex-choices > .ex-choice,
+  .exam-topic-list > *,
+  #alg-output > *,
+  #calc-output > *,
+  .content-pane .inner > *:not(.hero-stage),
+  .panel-body > .card,
+  .panel-body > .label,
+  .toggle-row
+):nth-child(2) { --si: 1; }
+.tool.active :is(
+  .keypad > .key,
+  .steps > .step,
+  .tool-grid > .tool-btn,
+  .practice-topic-grid > .practice-topic-chip,
+  #learn-list > *,
+  .btn-row > .btn,
+  #g-list > .expr-item,
+  #geo-objects > .obj-item,
+  #calc-history > .history-item,
+  .ex-choices > .ex-choice,
+  .exam-topic-list > *,
+  #alg-output > *,
+  #calc-output > *,
+  .content-pane .inner > *:not(.hero-stage),
+  .panel-body > .card,
+  .panel-body > .label,
+  .toggle-row
+):nth-child(3) { --si: 2; }
+.tool.active :is(
+  .keypad > .key,
+  .steps > .step,
+  .tool-grid > .tool-btn,
+  .practice-topic-grid > .practice-topic-chip,
+  #learn-list > *,
+  .btn-row > .btn,
+  #g-list > .expr-item,
+  #geo-objects > .obj-item,
+  #calc-history > .history-item,
+  .ex-choices > .ex-choice,
+  .exam-topic-list > *,
+  #alg-output > *,
+  #calc-output > *,
+  .content-pane .inner > *:not(.hero-stage),
+  .panel-body > .card,
+  .panel-body > .label,
+  .toggle-row
+):nth-child(4) { --si: 3; }
+.tool.active :is(
+  .keypad > .key,
+  .steps > .step,
+  .tool-grid > .tool-btn,
+  .practice-topic-grid > .practice-topic-chip,
+  #learn-list > *,
+  .btn-row > .btn,
+  #g-list > .expr-item,
+  #geo-objects > .obj-item,
+  #calc-history > .history-item,
+  .ex-choices > .ex-choice,
+  .exam-topic-list > *,
+  #alg-output > *,
+  #calc-output > *,
+  .content-pane .inner > *:not(.hero-stage),
+  .panel-body > .card,
+  .panel-body > .label,
+  .toggle-row
+):nth-child(5) { --si: 4; }
+.tool.active :is(
+  .keypad > .key,
+  .steps > .step,
+  .tool-grid > .tool-btn,
+  .practice-topic-grid > .practice-topic-chip,
+  #learn-list > *,
+  .btn-row > .btn,
+  #g-list > .expr-item,
+  #geo-objects > .obj-item,
+  #calc-history > .history-item,
+  .ex-choices > .ex-choice,
+  .exam-topic-list > *,
+  #alg-output > *,
+  #calc-output > *,
+  .content-pane .inner > *:not(.hero-stage),
+  .panel-body > .card,
+  .panel-body > .label,
+  .toggle-row
+):nth-child(6) { --si: 5; }
+.tool.active :is(
+  .keypad > .key,
+  .steps > .step,
+  .tool-grid > .tool-btn,
+  .practice-topic-grid > .practice-topic-chip,
+  #learn-list > *,
+  .btn-row > .btn,
+  #g-list > .expr-item,
+  #geo-objects > .obj-item,
+  #calc-history > .history-item,
+  .ex-choices > .ex-choice,
+  .exam-topic-list > *,
+  #alg-output > *,
+  #calc-output > *,
+  .content-pane .inner > *:not(.hero-stage),
+  .panel-body > .card,
+  .panel-body > .label,
+  .toggle-row
+):nth-child(7) { --si: 6; }
+.tool.active :is(
+  .keypad > .key,
+  .steps > .step,
+  .tool-grid > .tool-btn,
+  .practice-topic-grid > .practice-topic-chip,
+  #learn-list > *,
+  .btn-row > .btn,
+  #g-list > .expr-item,
+  #geo-objects > .obj-item,
+  #calc-history > .history-item,
+  .ex-choices > .ex-choice,
+  .exam-topic-list > *,
+  #alg-output > *,
+  #calc-output > *,
+  .content-pane .inner > *:not(.hero-stage),
+  .panel-body > .card,
+  .panel-body > .label,
+  .toggle-row
+):nth-child(8) { --si: 7; }
+.tool.active :is(
+  .keypad > .key,
+  .steps > .step,
+  .tool-grid > .tool-btn,
+  .practice-topic-grid > .practice-topic-chip,
+  #learn-list > *,
+  .btn-row > .btn,
+  #g-list > .expr-item,
+  #geo-objects > .obj-item,
+  #calc-history > .history-item,
+  .ex-choices > .ex-choice,
+  .exam-topic-list > *,
+  #alg-output > *,
+  #calc-output > *,
+  .content-pane .inner > *:not(.hero-stage),
+  .panel-body > .card,
+  .panel-body > .label,
+  .toggle-row
+):nth-child(9) { --si: 8; }
+.tool.active :is(
+  .keypad > .key,
+  .steps > .step,
+  .tool-grid > .tool-btn,
+  .practice-topic-grid > .practice-topic-chip,
+  #learn-list > *,
+  .btn-row > .btn,
+  #g-list > .expr-item,
+  #geo-objects > .obj-item,
+  #calc-history > .history-item,
+  .ex-choices > .ex-choice,
+  .exam-topic-list > *,
+  #alg-output > *,
+  #calc-output > *,
+  .content-pane .inner > *:not(.hero-stage),
+  .panel-body > .card,
+  .panel-body > .label,
+  .toggle-row
+):nth-child(10) { --si: 9; }
+.tool.active :is(
+  .keypad > .key,
+  .steps > .step,
+  .tool-grid > .tool-btn,
+  .practice-topic-grid > .practice-topic-chip,
+  #learn-list > *,
+  .btn-row > .btn,
+  #g-list > .expr-item,
+  #geo-objects > .obj-item,
+  #calc-history > .history-item,
+  .ex-choices > .ex-choice,
+  .exam-topic-list > *,
+  #alg-output > *,
+  #calc-output > *,
+  .content-pane .inner > *:not(.hero-stage),
+  .panel-body > .card,
+  .panel-body > .label,
+  .toggle-row
+):nth-child(11) { --si: 10; }
+.tool.active :is(
+  .keypad > .key,
+  .steps > .step,
+  .tool-grid > .tool-btn,
+  .practice-topic-grid > .practice-topic-chip,
+  #learn-list > *,
+  .btn-row > .btn,
+  #g-list > .expr-item,
+  #geo-objects > .obj-item,
+  #calc-history > .history-item,
+  .ex-choices > .ex-choice,
+  .exam-topic-list > *,
+  #alg-output > *,
+  #calc-output > *,
+  .content-pane .inner > *:not(.hero-stage),
+  .panel-body > .card,
+  .panel-body > .label,
+  .toggle-row
+):nth-child(12) { --si: 11; }
+.tool.active :is(
+  .keypad > .key,
+  .steps > .step,
+  .tool-grid > .tool-btn,
+  .practice-topic-grid > .practice-topic-chip,
+  #learn-list > *,
+  .btn-row > .btn,
+  #g-list > .expr-item,
+  #geo-objects > .obj-item,
+  #calc-history > .history-item,
+  .ex-choices > .ex-choice,
+  .exam-topic-list > *,
+  #alg-output > *,
+  #calc-output > *,
+  .content-pane .inner > *:not(.hero-stage),
+  .panel-body > .card,
+  .panel-body > .label,
+  .toggle-row
+):nth-child(13) { --si: 12; }
+.tool.active :is(
+  .keypad > .key,
+  .steps > .step,
+  .tool-grid > .tool-btn,
+  .practice-topic-grid > .practice-topic-chip,
+  #learn-list > *,
+  .btn-row > .btn,
+  #g-list > .expr-item,
+  #geo-objects > .obj-item,
+  #calc-history > .history-item,
+  .ex-choices > .ex-choice,
+  .exam-topic-list > *,
+  #alg-output > *,
+  #calc-output > *,
+  .content-pane .inner > *:not(.hero-stage),
+  .panel-body > .card,
+  .panel-body > .label,
+  .toggle-row
+):nth-child(14) { --si: 13; }
+
+@keyframes from-left { from { opacity: 0; transform: translateX(-34px); } }
+@keyframes from-right { from { opacity: 0; transform: translateX(34px); } }
+@keyframes pop-in { from { opacity: 0; transform: translateY(16px) scale(.97); filter: blur(4px); } }
+@keyframes wipe { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0); } }
+@keyframes shake { 20%, 60% { transform: translateX(-6px); } 40%, 80% { transform: translateX(6px); } }
+@keyframes bounce-in { 0% { opacity: 0; transform: scale(.4); } 60% { transform: scale(1.12); } 100% { opacity: 1; transform: scale(1); } }
+@keyframes flash { from { background: hsl(var(--hue) 90% 55% / .35); } }
+@keyframes glow-ring { from { box-shadow: 0 0 0 0 hsl(var(--hue) 90% 55% / .55); } to { box-shadow: 0 0 0 14px hsl(var(--hue) 90% 55% / 0); } }
+@keyframes drop { from { opacity: 0; transform: translateY(-10px) scale(.97); } }
+@keyframes wiggle { 25% { transform: rotate(-14deg) scale(1.15); } 60% { transform: rotate(10deg) scale(1.15); } }
+@keyframes float { 50% { transform: translateY(-2px) rotate(-5deg); } }
+@keyframes shimmer { to { background-position: -200% 0; } }
+@keyframes blob-drift { to { transform: translate(6%, -4%) scale(1.15); } }
+@keyframes title-swap { from { opacity: 0; transform: translateY(8px); filter: blur(3px); } }
+
+/* Ambiente: luz de color viva detrás de las herramientas */
+.tool { position: relative; z-index: 1; }
+.workspace::before {
+  content: ''; position: absolute; inset: -10%; z-index: 0; pointer-events: none; opacity: .5;
+  background:
+    radial-gradient(40% 45% at 18% 22%, hsl(var(--hue) 85% 55% / .13), transparent 70%),
+    radial-gradient(38% 45% at 85% 80%, hsl(calc(var(--hue) + 80) 85% 55% / .11), transparent 70%);
+  animation: blob-drift 16s ease-in-out infinite alternate;
+}
+
+/* Barra superior y navegación */
+.brand .glyph { animation: float 4.5s ease-in-out infinite; }
+.brand:hover .glyph { animation: wiggle .6s ease; }
+.nav-item { animation: from-left .55s var(--ease) both; animation-delay: calc(var(--si, 10) * 45ms + .1s); }
+.sidebar > :nth-child(1) { --si: 0; }
+.sidebar > :nth-child(2) { --si: 1; }
+.sidebar > :nth-child(3) { --si: 2; }
+.sidebar > :nth-child(4) { --si: 3; }
+.sidebar > :nth-child(5) { --si: 4; }
+.sidebar > :nth-child(6) { --si: 5; }
+.sidebar > :nth-child(7) { --si: 6; }
+.sidebar > :nth-child(8) { --si: 7; }
+.sidebar > :nth-child(9) { --si: 8; }
+.sidebar > :nth-child(10) { --si: 9; }
+.sidebar > :nth-child(11) { --si: 10; }
+.sidebar > :nth-child(12) { --si: 11; }
+.nav-item:hover .ic, .nav-item:hover i { animation: wiggle .55s ease; }
+.nav-item .ic, .nav-item i { display: inline-block; }
+html.is-loading .nav-item, html.is-loading .topbar > *, html.is-loading .brand .glyph { animation-play-state: paused; }
+.topbar > * { animation: drop .6s var(--ease) backwards; }
+.tool-title.swap { animation: title-swap .5s var(--ease); }
+
+/* Botones, campos y controles */
+.btn, .key, .tool-btn, .topic-btn, .practice-topic-chip, .ex-choice { position: relative; overflow: hidden; }
+.btn:hover:not([disabled]), .key:hover, .tool-btn:hover, .practice-topic-chip:hover { transform: translateY(-2px); }
+.btn:active, .key:active, .tool-btn:active { transform: translateY(0) scale(.95); }
+.topic-btn { transition: transform .2s var(--ease), background .15s ease; }
+.topic-btn:hover { transform: translateX(5px); }
+.ex-choice { transition: transform .2s var(--ease), background .15s ease, border-color .15s ease; }
+.ex-choice:hover { transform: translateX(4px); }
+.ex-choice.picked { animation: glow-ring .6s ease-out; }
+.chip { transition: transform .2s var(--ease); }
+.chip:hover { transform: translateY(-2px) scale(1.05); }
+.card, .history-item, .obj-item, .expr-item { transition: transform .25s var(--ease), box-shadow .25s ease, border-color .2s ease, background .15s ease; }
+.card:hover, .expr-item:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+.history-item:hover, .obj-item:hover { transform: translateX(4px); }
+.obj-item.sel, .tool-btn[aria-pressed="true"] { animation: glow-ring .7s ease-out; }
+.field:focus, .expr-input:focus, .ex-input:focus { animation: glow-ring .6s ease-out; }
+.switch .thumb { transition: transform .35s cubic-bezier(.34, 1.7, .5, 1), background .2s ease; }
+input[type="range"]::-webkit-slider-thumb { transition: transform .15s var(--ease); }
+input[type="range"]:hover::-webkit-slider-thumb { transform: scale(1.3); }
+.expr-swatch:not(.off) { animation: glow-ring 2.4s ease-out infinite; }
+
+/* Resultados y práctica */
+.result-line { animation: pop-in .55s var(--ease) both; }
+.result-line .val { animation: flash 1.2s ease-out .3s both; border-radius: 6px; }
+.step { animation: from-left .55s var(--ease) both; animation-delay: calc(var(--si, 8) * 90ms + .1s); }
+.step::before { animation: bounce-in .5s var(--ease) both; animation-delay: calc(var(--si, 8) * 90ms + .25s); }
+.error-box, .ex-verdict.bad { animation: shake .45s ease; }
+.ex-verdict.ok { animation: bounce-in .55s var(--ease) both; }
+.result-score { animation: bounce-in .8s var(--ease) both .15s; }
+.result-summary { animation: pop-in .7s var(--ease) both; }
+.exam-review-item, .lesson-block, .example-card { animation: pop-in .55s var(--ease) both; }
+.progress-fill {
+  transition: width .7s var(--ease);
+  background-image: linear-gradient(100deg, transparent 30%, hsl(var(--hue) 100% 85% / .45) 50%, transparent 70%);
+  background-size: 200% 100%; animation: shimmer 2.2s linear infinite;
+}
+.empty { animation: pop-in .6s var(--ease) both; }
+.history-item { animation: from-right .5s var(--ease) both; }
+
+/* Paneles emergentes */
+.profile-panel:not([hidden]), .symbol-panel:not([hidden]), .symbol-hint:not([hidden]) { animation: drop .3s var(--ease); }
+
+/* Ondulación al pulsar */
+.ripple {
+  position: absolute; border-radius: 50%; pointer-events: none; width: 12px; height: 12px; margin: -6px 0 0 -6px;
+  background: hsl(var(--hue) 95% 62% / .45); animation: ripple .65s ease-out forwards;
+}
+@keyframes ripple { to { transform: scale(26); opacity: 0; } }
+
+/* Luz que sigue al cursor */
+.cursor-glow {
+  position: fixed; left: 0; top: 0; width: 460px; height: 460px; margin: -230px 0 0 -230px; z-index: 5;
+  pointer-events: none; opacity: .13; border-radius: 50%; will-change: transform;
+  background: radial-gradient(circle, hsl(var(--hue) 95% 58%), transparent 65%);
+}
+@media (hover: none) { .cursor-glow { display: none; } }
+
+/* Título de capítulo al cambiar de sección */
+.chapter { position: absolute; inset: 0; z-index: 30; overflow: hidden; pointer-events: none; visibility: hidden; }
+.chapter.play { visibility: visible; animation: chapter-life .95s linear forwards; }
+.chapter-wipe {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(50% 70% at 25% 30%, hsl(var(--hue) 92% 50% / .6), transparent 70%),
+    radial-gradient(50% 70% at 80% 75%, hsl(calc(var(--hue) + 85) 92% 55% / .5), transparent 70%),
+    var(--stage);
+}
+.chapter-body {
+  position: absolute; inset: 0; display: grid; place-items: center; align-content: center; gap: 6px;
+  color: var(--stage-text); text-align: center; padding: 20px;
+}
+.chapter-body svg { width: min(180px, 36vw); height: auto; overflow: visible; }
+.chapter-body path {
+  fill: none; stroke: hsl(var(--hue) 95% 72%); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round;
+  stroke-dasharray: 1; stroke-dashoffset: 1; filter: drop-shadow(0 0 8px hsl(var(--hue) 95% 60%));
+}
+.chapter.play .chapter-body path { animation: draw .7s ease-out .08s forwards; }
+.chapter-num { font: 700 12px var(--mono); letter-spacing: .5em; color: hsl(var(--hue) 95% 76%); }
+.chapter-title {
+  font-weight: 800; letter-spacing: -.03em; font-size: clamp(30px, 7vw, 76px); line-height: 1;
+  background: linear-gradient(90deg, var(--stage-text), hsl(var(--hue) 96% 72%), hsl(calc(var(--hue) + 70) 96% 72%));
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent;
+}
+.chapter.play .chapter-body > * { animation: rise 1s var(--ease) both; }
+.chapter.play .chapter-wipe { animation: chapter-wipe .95s cubic-bezier(.76, 0, .24, 1) forwards; }
+@keyframes chapter-wipe {
+  0% { clip-path: inset(0 100% 0 0); } 38% { clip-path: inset(0 0 0 0); }
+  62% { clip-path: inset(0 0 0 0); } 100% { clip-path: inset(0 0 0 100%); }
+}
+@keyframes chapter-life { 0%, 78% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+
+/* Botón ✦ de efectos y modo sin efectos */
+#fx-btn { font-size: 15px; }
+html.no-fx #fx-btn { opacity: .5; }
+html.no-fx .reveal { opacity: 1; translate: none; }
+html.no-fx .cursor-glow, html.no-fx .chapter { display: none; }
+html.no-fx .app *, html.no-fx .app *::before, html.no-fx .app *::after, html.no-fx .toast {
+  animation: none !important; transition-duration: .01s !important;
+}
+html.no-fx .workspace::before { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .app *, .app *::before, .app *::after { animation: none !important; }
+  .cursor-glow, .chapter { display: none; }
+  .workspace::before { display: none; }
+}

@@ -1,0 +1,325 @@
+/* ── Herramienta: Mini exámenes ───────────────────────────────
+   Compila un examen a partir de los temas y la dificultad que
+   elige el usuario, tomando los ejercicios del mismo banco que
+   usa Practica. Cada pregunta se genera de verdad (no hay banco
+   fijo de "10 preguntas guardadas"): el examen se arma en el
+   momento combinando los temas elegidos.                        */
+(function (MP) {
+  'use strict';
+  var R = MP.render;
+  var el = {};
+
+  // Agrupación aproximada por nivel escolar chileno, sólo para poder filtrar
+  // los temas del examen — es un filtro real sobre los mismos temas del banco,
+  // no una lista distinta.
+  var LEVEL_MAP = {
+    '7-8basico': ['fracciones', 'potencias-raices', 'orden-operaciones', 'simplificar', 'distancia', 'pendiente-recta', 'circunferencia', 'pitagoras'],
+    '1-2medio': ['productos-notables', 'factorizacion', 'ecuaciones-lineales', 'ecuaciones-cuadraticas', 'que-es-funcion', 'funcion-lineal', 'funcion-cuadratica', 'trigonometria-basica'],
+    '3-4medio': ['que-es-derivada', 'reglas-derivacion', 'que-es-integral']
+  };
+  var LEVEL_LABEL = { todos: 'Todos los niveles', '7-8basico': '7° y 8° básico', '1-2medio': '1° y 2° medio', '3-4medio': '3° y 4° medio' };
+  var DIFF_LABEL = { basico: '🟢 Fácil', intermedio: '🟡 Intermedio', avanzado: '🔴 Difícil', mixta: '🔥 Mixta' };
+
+  var cfg = { level: 'todos', topics: [], count: 10, difficulty: 'mixta', timer: false };
+  var exam = null; // { questions:[], index, answers:[], startTime, timerId }
+
+  function topicMeta(id) {
+    var found = null, cat = null;
+    MP.content.topics.forEach(function (c) { c.items.forEach(function (t) { if (t.id === id) { found = t; cat = c.name; } }); });
+    return found ? { title: found.title, category: cat } : { title: id, category: '' };
+  }
+
+  function topicsForLevel(level) {
+    var ids = level === 'todos' ? MP.exbank.topics.slice() : (LEVEL_MAP[level] || []);
+    return ids.filter(function (id) { return MP.exbank.has(id); });
+  }
+
+  /* ── Configuración ────────────────────────────────────────── */
+
+  function renderConfig() {
+    var levelTopics = topicsForLevel(cfg.level);
+    cfg.topics = cfg.topics.filter(function (id) { return levelTopics.indexOf(id) >= 0; });
+
+    var byCat = {};
+    levelTopics.forEach(function (id) {
+      var m = topicMeta(id);
+      (byCat[m.category] = byCat[m.category] || []).push({ id: id, title: m.title });
+    });
+
+    var html = '<div class="inner">';
+    html += '<div class="mode-hero exam-hero"><span class="orb o1" aria-hidden="true">🎓</span><span class="orb o2" aria-hidden="true">∫</span><span class="orb o3" aria-hidden="true">Δ</span>' +
+      '<div class="kicker">Mini exámenes</div><h2>Arma tu propio examen</h2>' +
+      '<p>Elige nivel, temas y dificultad. Cada pregunta se genera en el momento y al final ves la revisión con enlaces para repasar.</p></div>';
+
+    html += '<div class="section-heading">Nivel</div><div class="btn-row seg level-row">';
+    Object.keys(LEVEL_LABEL).forEach(function (lv) {
+      html += '<button class="btn seg-btn' + (cfg.level === lv ? ' primary' : '') + '" data-level="' + lv + '">' + LEVEL_LABEL[lv] + '</button>';
+    });
+    html += '</div>';
+
+    html += '<div class="section-heading">Temas <span class="muted small">(elige al menos uno)</span></div>';
+    Object.keys(byCat).forEach(function (catName) {
+      html += '<div class="practice-cat">' + R.esc(catName) + '</div><div class="exam-topic-list">';
+      byCat[catName].forEach(function (t) {
+        var checked = cfg.topics.indexOf(t.id) >= 0;
+        html += '<label class="exam-topic-check"><input type="checkbox" data-etopic="' + t.id + '" ' + (checked ? 'checked' : '') + '><span>' + R.esc(t.title) + '</span></label>';
+      });
+      html += '</div>';
+    });
+
+    html += '<div class="section-heading">Cantidad de preguntas</div><div class="btn-row seg" id="exam-count-row">';
+    [5, 10, 15, 20].forEach(function (n) {
+      html += '<button class="btn seg-btn' + (cfg.count === n ? ' primary' : '') + '" data-count="' + n + '">' + n + '</button>';
+    });
+    html += '</div>';
+
+    html += '<div class="section-heading">Dificultad</div><div class="btn-row seg" id="exam-diff-row">';
+    Object.keys(DIFF_LABEL).forEach(function (d) {
+      html += '<button class="btn seg-btn' + (cfg.difficulty === d ? ' primary' : '') + '" data-d="' + d + '" data-ediff="' + d + '">' + DIFF_LABEL[d] + '</button>';
+    });
+    html += '</div>';
+
+    html += '<div class="toggle-row" style="max-width:260px;margin-top:14px">' +
+      '<span>Usar temporizador</span><label class="switch"><input type="checkbox" id="exam-timer-toggle" ' + (cfg.timer ? 'checked' : '') + '>' +
+      '<span class="track"></span><span class="thumb"></span></label></div>';
+
+    html += '<div class="exam-summary" id="exam-summary"></div>';
+    html += '<div class="btn-row" style="margin-top:14px">' +
+      '<button class="btn primary lg start-btn" id="exam-create" ' + (cfg.topics.length ? '' : 'disabled') + '>Crear mini examen <span aria-hidden="true">→</span></button></div>';
+
+    var hist = MP.profiles.getData().exams;
+    if (hist.length) {
+      html += '<div class="section-heading">Exámenes anteriores en este perfil</div><div class="hist-list">';
+      hist.slice(0, 5).forEach(function (h) {
+        var pct = h.total ? Math.round(100 * h.score / h.total) : 0;
+        html += '<div class="obj-item hist-item"><div class="obj-head"><span class="obj-name" style="font-style:normal">' +
+          h.score + '/' + h.total + '</span><span class="obj-kind">' + new Date(h.date).toLocaleDateString() + ' · ' + R.esc(h.topicsLabel) + '</span></div>' +
+          '<div class="bd-bar"><i class="' + (pct >= 70 ? 'hi' : pct >= 50 ? 'mid' : 'lo') + '" style="width:' + pct + '%"></i></div></div>';
+      });
+      html += '</div>';
+    }
+    html += '</div>';
+    el.content.innerHTML = html;
+    bindConfig();
+    paintSummary();
+  }
+
+  // Resumen vivo de lo que se va a crear.
+  function paintSummary() {
+    var box = document.getElementById('exam-summary');
+    if (!box) return;
+    var mins = Math.max(1, Math.round(cfg.count * 1.5));
+    box.innerHTML = '<span class="chip accent">' + cfg.topics.length + ' tema' + (cfg.topics.length === 1 ? '' : 's') + '</span>' +
+      '<span class="chip">' + cfg.count + ' preguntas</span>' +
+      '<span class="chip">' + DIFF_LABEL[cfg.difficulty] + '</span>' +
+      '<span class="chip">≈ ' + mins + ' min</span>' + (cfg.timer ? '<span class="chip">⏱ con temporizador</span>' : '');
+    MP.kit.bump(box);
+  }
+
+  function bindConfig() {
+    Array.prototype.forEach.call(el.content.querySelectorAll('[data-level]'), function (b) {
+      b.onclick = function () { cfg.level = b.getAttribute('data-level'); renderConfig(); };
+    });
+    Array.prototype.forEach.call(el.content.querySelectorAll('[data-etopic]'), function (c) {
+      c.onchange = function () {
+        var id = c.getAttribute('data-etopic'), i = cfg.topics.indexOf(id);
+        if (c.checked && i < 0) cfg.topics.push(id);
+        if (!c.checked && i >= 0) cfg.topics.splice(i, 1);
+        var btn = document.getElementById('exam-create');
+        if (btn) btn.disabled = cfg.topics.length === 0;
+        paintSummary();
+      };
+    });
+    var countBtns = el.content.querySelectorAll('[data-count]');
+    Array.prototype.forEach.call(countBtns, function (b) {
+      b.onclick = function () {
+        cfg.count = parseInt(b.getAttribute('data-count'), 10);
+        Array.prototype.forEach.call(countBtns, function (x) { x.classList.toggle('primary', x === b); });
+        paintSummary();
+      };
+    });
+    var diffBtns = el.content.querySelectorAll('[data-ediff]');
+    Array.prototype.forEach.call(diffBtns, function (b) {
+      b.onclick = function () {
+        cfg.difficulty = b.getAttribute('data-ediff');
+        Array.prototype.forEach.call(diffBtns, function (x) { x.classList.toggle('primary', x === b); });
+        paintSummary();
+      };
+    });
+    var timerToggle = document.getElementById('exam-timer-toggle');
+    if (timerToggle) timerToggle.onchange = function () { cfg.timer = timerToggle.checked; paintSummary(); };
+    var createBtn = document.getElementById('exam-create');
+    if (createBtn) createBtn.onclick = startExam;
+  }
+
+  /* ── Generar y ejecutar ──────────────────────────────────── */
+
+  function pickDifficulty() {
+    if (cfg.difficulty !== 'mixta') return cfg.difficulty;
+    return MP.exbank.difficulties[Math.floor(Math.random() * MP.exbank.difficulties.length)];
+  }
+
+  function startExam() {
+    var topics = cfg.topics.slice();
+    var order = [];
+    var per = Math.floor(cfg.count / topics.length), extra = cfg.count % topics.length;
+    topics.forEach(function (id, idx) {
+      var n = per + (idx < extra ? 1 : 0);
+      for (var k = 0; k < n; k++) order.push(id);
+    });
+    order = MP.exengine.shuffle(MP.exengine.makeRng((Date.now() ^ Math.floor(Math.random() * 1e9)) >>> 0), order);
+    var questions = order.map(function (topicId) { return MP.exbank.generate(topicId, pickDifficulty()); });
+    exam = {
+      questions: questions, index: 0, answers: new Array(questions.length).fill(null),
+      startTime: Date.now(), timerId: null, topicsLabel: topics.map(function (id) { return topicMeta(id).title; }).join(', ')
+    };
+    if (cfg.timer) startTimerLoop();
+    renderQuestion();
+  }
+
+  function startTimerLoop() {
+    exam.timerId = setInterval(function () {
+      var elDisplay = document.getElementById('exam-timer-display');
+      if (!elDisplay) { clearInterval(exam.timerId); return; }
+      var secs = Math.floor((Date.now() - exam.startTime) / 1000);
+      elDisplay.textContent = '⏱ ' + fmtTime(secs);
+    }, 1000);
+  }
+  function fmtTime(totalSecs) {
+    var m = Math.floor(totalSecs / 60), s = totalSecs % 60;
+    return (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+  }
+
+  function answeredResults() {
+    return exam.answers.map(function (a) { return a ? !!a.correct : undefined; });
+  }
+
+  function renderQuestion() {
+    var q = exam.questions[exam.index];
+    var meta = topicMeta(q.topicId);
+    var prev = Math.round(100 * Math.max(0, exam.index - 1) / exam.questions.length);
+    var now = Math.round(100 * exam.index / exam.questions.length);
+    el.content.innerHTML =
+      '<div class="inner">' +
+      '<div class="hud"><div class="hud-left">' +
+      '<span class="muted small hud-count">Pregunta ' + (exam.index + 1) + ' de ' + exam.questions.length + '</span>' +
+      MP.kit.stepperHTML(answeredResults(), exam.index, exam.questions.length) + '</div>' +
+      '<div class="hud-right">' +
+      (cfg.timer ? '<span class="chip timer-chip mono" id="exam-timer-display">⏱ 00:00</span>' : '') + '</div></div>' +
+      '<div class="practice-progress"><div class="progress-track"><div class="progress-fill" style="width:' + prev + '%"></div></div></div>' +
+      '<div class="card example-card ex-card" id="exam-card"></div>' +
+      '</div>';
+    var fill = el.content.querySelector('.progress-fill');
+    setTimeout(function () { if (fill && fill.style) fill.style.width = now + '%'; }, 40);
+
+    var answered = exam.index;
+    MP.widgets.renderExercise(document.getElementById('exam-card'), q, {
+      showTopic: true, topicLabel: meta.title,
+      onResult: function (res) {
+        exam.answers[answered] = res;
+        var dot = el.content.querySelectorAll('.stepper .dot')[answered];
+        if (dot) dot.className = 'dot ' + (res.correct ? 'ok' : 'bad');
+      },
+      onNext: function () {
+        exam.index++;
+        if (exam.index >= exam.questions.length) finishExam(); else renderQuestion();
+      },
+      nextLabel: (exam.index + 1 >= exam.questions.length) ? 'Ver resultados' : 'Siguiente pregunta'
+    });
+  }
+
+  function finishExam() {
+    if (exam.timerId) clearInterval(exam.timerId);
+    var correct = exam.answers.filter(function (a) { return a && a.correct; }).length;
+    var total = exam.questions.length;
+    var elapsed = Math.floor((Date.now() - exam.startTime) / 1000);
+    var missedTopics = [], byTopic = {};
+    exam.answers.forEach(function (a, i) {
+      var id = exam.questions[i].topicId;
+      var bt = byTopic[id] = byTopic[id] || { c: 0, t: 0 };
+      bt.t++; if (a && a.correct) bt.c++;
+      if (a && !a.correct && missedTopics.indexOf(id) < 0) missedTopics.push(id);
+    });
+
+    MP.profiles.recordExam({
+      date: Date.now(), score: correct, total: total,
+      topicsLabel: exam.topicsLabel, difficulty: cfg.difficulty,
+      missedTopicIds: missedTopics, timeSeconds: cfg.timer ? elapsed : null
+    });
+
+    var pct = total ? Math.round(100 * correct / total) : 0;
+    var g = MP.kit.grade(pct);
+    var rows = Object.keys(byTopic).map(function (id) {
+      return { label: topicMeta(id).title, correct: byTopic[id].c, total: byTopic[id].t };
+    });
+
+    var html = '<div class="inner">';
+    html += '<div class="exam-result-head">🎓 Mini examen terminado</div>';
+    html += '<div class="summary-hero tone-' + g.tone + '"><div class="result-summary">' + MP.kit.ringHTML(correct, total) +
+      '<div class="grade-title"><span class="grade-ico">' + g.icon + '</span> ' + g.title + '</div>' +
+      '<div class="muted small">' + pct + '% correcto' + (cfg.timer ? ' · tiempo ' + fmtTime(elapsed) : '') + '</div></div></div>';
+
+    html += '<div class="btn-row" style="margin:14px 0;justify-content:center">' +
+      '<span class="chip accent">✓ ' + correct + ' correctas</span>' +
+      '<span class="chip">✗ ' + (total - correct) + ' incorrectas</span></div>';
+    html += MP.kit.stepperHTML(answeredResults(), -1, total);
+
+    if (rows.length > 1) html += '<div class="section-heading">Por tema</div>' + MP.kit.breakdownHTML(rows);
+
+    if (missedTopics.length) {
+      html += '<div class="section-heading">Para repasar</div>';
+      missedTopics.slice(0, 4).forEach(function (id) { html += MP.kit.resourcesHTML(id, 'Repasa: ' + topicMeta(id).title); });
+    }
+
+    html += '<div class="section-heading">Revisión</div><div id="exam-review"></div>';
+
+    html += '<div class="btn-row" style="margin-top:16px">' +
+      '<button class="btn primary lg" id="exam-repeat">Repetir examen</button>';
+    if (missedTopics.length) html += '<button class="btn lg" id="exam-practice-errors">Practicar mis errores</button>';
+    html += '<button class="btn ghost lg" id="exam-home">Volver a configurar</button></div>';
+    html += '</div>';
+
+    el.content.innerHTML = html;
+    MP.kit.countUp(el.content);
+    if (pct >= 80) MP.kit.confetti(el.content.querySelector('.ring'), 60);
+
+    var reviewBox = document.getElementById('exam-review');
+    exam.questions.forEach(function (q, i) {
+      var a = exam.answers[i] || { correct: false, gaveUp: true };
+      var row = document.createElement('div');
+      row.className = 'exam-review-item ' + (a.correct ? 'is-ok' : 'is-bad');
+      row.style.setProperty && row.style.setProperty('--si', i);
+      row.innerHTML = '<button class="exam-review-head">' +
+        '<span class="' + (a.correct ? 'ok' : 'bad') + '">' + (a.correct ? '✓' : '✗') + '</span>' +
+        '<span class="exam-review-prompt">' + q.prompt + '</span><span class="chev" aria-hidden="true">▾</span></button>' +
+        '<div class="exam-review-body" hidden>' +
+        '<div class="result-line"><span class="tag">Respuesta correcta</span><span class="val">' + R.esc(q.answerText) + '</span></div>' +
+        (q.steps && q.steps.length ? '<div class="steps">' + q.steps.map(function (s) {
+          return '<div class="step"><div><div class="why">' + s.why + '</div><div class="what">' + s.html + '</div></div></div>';
+        }).join('') + '</div>' : '') +
+        MP.kit.resourcesHTML(q.topicId, 'Más sobre ' + topicMeta(q.topicId).title, true) + '</div>';
+      var head = row.querySelector('.exam-review-head');
+      var body = row.querySelector('.exam-review-body');
+      head.onclick = function () { body.hidden = !body.hidden; row.classList.toggle('open', !body.hidden); };
+      reviewBox.appendChild(row);
+    });
+
+    document.getElementById('exam-repeat').onclick = startExam;
+    document.getElementById('exam-home').onclick = function () { exam = null; renderConfig(); };
+    var errBtn = document.getElementById('exam-practice-errors');
+    if (errBtn) errBtn.onclick = function () {
+      MP.app.switchTool('practice');
+      MP.tools.practice.startTopics(missedTopics, 'basico', Math.max(6, missedTopics.length * 2));
+      MP.app.toast('Practicando los temas donde fallaste');
+    };
+  }
+
+  function init() {
+    el.content = document.getElementById('exam-content');
+    cfg.topics = [];
+    renderConfig();
+  }
+
+  MP.tools = MP.tools || {};
+  MP.tools.exams = { init: init, reset: function () { exam = null; cfg.topics = []; renderConfig(); } };
+})(window.MP = window.MP || {});
